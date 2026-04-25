@@ -3,6 +3,7 @@ title = "Doraemon0358 的安全实验室"
 theme = "PaperMod"
 languageCode = "zh-cn"
 paginate = 10
+publishDir = 'public'
 
 [taxonomies]
   category = "categories"
