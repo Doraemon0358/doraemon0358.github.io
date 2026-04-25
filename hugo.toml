@@ -1,0 +1,49 @@
+baseURL = 'https://Doraemon0358.github.io/'
+title = "Doraemon0358 的安全实验室"
+theme = "PaperMod"
+languageCode = "zh-cn"
+paginate = 10
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[params]
+  author = "Doraemon0358"
+  description = "内网渗透 | 协议分析 | 红队技术 | 安全研究"
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowToc = true
+  ShowCodeCopyButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+
+  [params.homeInfoParams]
+    Title = "👋 欢迎来到我的安全笔记站"
+    Content = "记录我的网络安全旅程"
+
+[[menu.main]]
+  name = "首页"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "内网渗透"
+  url = "/categories/内网渗透/"
+  weight = 2
+
+[[menu.main]]
+  name = "协议分析"
+  url = "/categories/协议分析/"
+  weight = 3
+
+[[menu.main]]
+  name = "归档"
+  url = "/archives/"
+  weight = 4
+
+[[menu.main]]
+  name = "标签"
+  url = "/tags/"
+  weight = 5
