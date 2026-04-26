@@ -1,5 +1,5 @@
 ---
-title: "NASA 域渗透实战全记录 | 从外网打点到域控完全控制"
+title: "从外网打点到渗透内网域控 NASA"
 date: 2026-04-25T22:00:00+08:00
 draft: false
 author: "偶记"

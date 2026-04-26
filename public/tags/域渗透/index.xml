@@ -1,82 +1,67 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>域渗透 on Doraemon0358 的安全实验室</title>
-    <link>http://localhost:1313/tags/%E5%9F%9F%E6%B8%97%E9%80%8F/</link>
-    <description>Recent content in 域渗透 on Doraemon0358 的安全实验室</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Sat, 25 Apr 2026 22:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/%E5%9F%9F%E6%B8%97%E9%80%8F/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>NASA 域渗透实战全记录 | 从外网打点到域控完全控制</title>
-      <link>http://localhost:1313/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/</link>
-      <pubDate>Sat, 25 Apr 2026 22:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/</guid>
-      <description>&lt;p&gt;本文记录了一次完整的 NASA 靶场渗透过程，从外网打点、WebShell 获取、Linux 提权，到内网横向移动，最终利用 noPac（CVE-2021-42278 + CVE-2021-42287）拿下域控。整个过程使用真实工具链和命令，适合红蓝对抗爱好者参考。&lt;/p&gt;
-&lt;h3 id=&#34;目标环境&#34;&gt;目标环境&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>域渗透 on Doraemon0358 的安全实验室</title><link>https://Doraemon0358.github.io/tags/%E5%9F%9F%E6%B8%97%E9%80%8F/</link><description>Recent content in 域渗透 on Doraemon0358 的安全实验室</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sat, 25 Apr 2026 22:00:00 +0800</lastBuildDate><atom:link href="https://Doraemon0358.github.io/tags/%E5%9F%9F%E6%B8%97%E9%80%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>NASA 域渗透实战全记录 | 从外网打点到域控完全控制</title><link>https://Doraemon0358.github.io/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/</link><pubDate>Sat, 25 Apr 2026 22:00:00 +0800</pubDate><guid>https://Doraemon0358.github.io/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/</guid><description>&lt;p&gt;本文记录了一次完整的 NASA 靶场渗透过程，从外网打点、WebShell 获取、Linux 提权，到内网横向移动，最终利用 noPac（CVE-2021-42278 + CVE-2021-42287）拿下域控。整个过程使用真实工具链和命令，适合红蓝对抗爱好者参考。&lt;/p&gt;
+&lt;h3 id="目标环境"&gt;目标环境&lt;/h3&gt;
 &lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;主机名&lt;/th&gt;
-          &lt;th&gt;外网 IP&lt;/th&gt;
-          &lt;th&gt;内网 IP&lt;/th&gt;
-          &lt;th&gt;账号&lt;/th&gt;
-          &lt;th&gt;密码&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;ubuntu&lt;/td&gt;
-          &lt;td&gt;192.168.59.138&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;ubuntu&lt;/td&gt;
-          &lt;td&gt;QWEasd444&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;win2003&lt;/td&gt;
-          &lt;td&gt;192.168.59.144&lt;/td&gt;
-          &lt;td&gt;10.10.10.137&lt;/td&gt;
-          &lt;td&gt;administrator&lt;/td&gt;
-          &lt;td&gt;admin555&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;win7&lt;/td&gt;
-          &lt;td&gt;192.168.59.197&lt;/td&gt;
-          &lt;td&gt;10.10.10.142&lt;/td&gt;
-          &lt;td&gt;win7&lt;/td&gt;
-          &lt;td&gt;admin555&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;19server-01&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;10.10.10.140&lt;/td&gt;
-          &lt;td&gt;nasa\administrator&lt;/td&gt;
-          &lt;td&gt;QWEasd.123&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;19server-02&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;10.10.10.141&lt;/td&gt;
-          &lt;td&gt;nasa\administrator&lt;/td&gt;
-          &lt;td&gt;QWEasd.123&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;域用户&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;nasa\test&lt;/td&gt;
-          &lt;td&gt;QWEasd!@#999&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;主机名&lt;/th&gt;
+&lt;th&gt;外网 IP&lt;/th&gt;
+&lt;th&gt;内网 IP&lt;/th&gt;
+&lt;th&gt;账号&lt;/th&gt;
+&lt;th&gt;密码&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ubuntu&lt;/td&gt;
+&lt;td&gt;192.168.59.138&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;ubuntu&lt;/td&gt;
+&lt;td&gt;QWEasd444&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;win2003&lt;/td&gt;
+&lt;td&gt;192.168.59.144&lt;/td&gt;
+&lt;td&gt;10.10.10.137&lt;/td&gt;
+&lt;td&gt;administrator&lt;/td&gt;
+&lt;td&gt;admin555&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;win7&lt;/td&gt;
+&lt;td&gt;192.168.59.197&lt;/td&gt;
+&lt;td&gt;10.10.10.142&lt;/td&gt;
+&lt;td&gt;win7&lt;/td&gt;
+&lt;td&gt;admin555&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;19server-01&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;10.10.10.140&lt;/td&gt;
+&lt;td&gt;nasa\administrator&lt;/td&gt;
+&lt;td&gt;QWEasd.123&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;19server-02&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;10.10.10.141&lt;/td&gt;
+&lt;td&gt;nasa\administrator&lt;/td&gt;
+&lt;td&gt;QWEasd.123&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;域用户&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;nasa\test&lt;/td&gt;
+&lt;td&gt;QWEasd!@#999&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h3 id=&#34;1-外网打点&#34;&gt;1. 外网打点&lt;/h3&gt;
+&lt;h3 id="1-外网打点"&gt;1. 外网打点&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;使用 nmap、fscan 进行端口和服务扫描。&lt;/li&gt;
 &lt;li&gt;目录扫描发现后台入口 /admin/webadmin.php。&lt;/li&gt;
 &lt;li&gt;题目名称含 “nasa”，生成针对性字典成功爆破后台密码 &lt;strong&gt;nasa123&lt;/strong&gt;。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-获取-webshell代码注入&#34;&gt;2. 获取 WebShell（代码注入）&lt;/h3&gt;
+&lt;h3 id="2-获取-webshell代码注入"&gt;2. 获取 WebShell（代码注入）&lt;/h3&gt;
 &lt;p&gt;目标站点为&lt;strong&gt;逍遥商城系统&lt;/strong&gt;，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;利用思路&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
@@ -85,7 +70,4 @@
 &lt;li&gt;删除 install/install.lock 文件（任意文件删除漏洞或手动操作）。&lt;/li&gt;
 &lt;li&gt;蚁剑连接后门：http://192.168.178.140/config.php。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;关键代码片段&lt;/strong&gt;（install/index.php）：&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+&lt;p&gt;&lt;strong&gt;关键代码片段&lt;/strong&gt;（install/index.php）：&lt;/p&gt;</description></item></channel></rss>
