@@ -3,7 +3,7 @@ title: "MCP 原理（IDA-Pro-MCP 为例）"
 date: 2026-05-24T13:00:00+08:00
 draft: false
 author: "偶记"
-categories: ["工具开发"]
+categories: ["逆向"]
 tags: ["MCP", "IDA Pro", "Cline", "SSE", "逆向工程"]
 ---
 

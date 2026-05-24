@@ -36,8 +36,8 @@ publishDir = 'public'
   weight = 2
 
 [[menu.main]]
-  name = "协议分析"
-  url = "/categories/协议分析/"
+  name = "逆向"
+  url = "/categories/逆向/"
   weight = 3
 
 [[menu.main]]

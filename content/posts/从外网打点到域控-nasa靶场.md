@@ -3,7 +3,7 @@ title: "从外网打点到渗透内网域控 NASA"
 date: 2026-04-25T22:00:00+08:00
 draft: false
 author: "偶记"
-categories: ["渗透测试"]
+categories: ["内网渗透"]
 tags: ["域渗透", "noPac", "EternalBlue", "内网穿透"]
 ---
 
