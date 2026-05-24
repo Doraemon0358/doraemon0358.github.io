@@ -1,1 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Categories on Doraemon0358 的安全实验室</title><link>https://Doraemon0358.github.io/categories/</link><description>Recent content in Categories on Doraemon0358 的安全实验室</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sat, 25 Apr 2026 22:00:00 +0800</lastBuildDate><atom:link href="https://Doraemon0358.github.io/categories/index.xml" rel="self" type="application/rss+xml"/><item><title>渗透测试</title><link>https://Doraemon0358.github.io/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</link><pubDate>Sat, 25 Apr 2026 22:00:00 +0800</pubDate><guid>https://Doraemon0358.github.io/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Categories on Doraemon0358 的安全实验室</title>
+    <link>https://Doraemon0358.github.io/categories/</link>
+    <description>Recent content in Categories on Doraemon0358 的安全实验室</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 24 May 2026 13:00:00 +0800</lastBuildDate>
+    <atom:link href="https://Doraemon0358.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>工具开发</title>
+      <link>https://Doraemon0358.github.io/categories/%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/</link>
+      <pubDate>Sun, 24 May 2026 13:00:00 +0800</pubDate>
+      <guid>https://Doraemon0358.github.io/categories/%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>渗透测试</title>
+      <link>https://Doraemon0358.github.io/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</link>
+      <pubDate>Sat, 25 Apr 2026 22:00:00 +0800</pubDate>
+      <guid>https://Doraemon0358.github.io/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
