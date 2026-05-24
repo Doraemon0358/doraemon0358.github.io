@@ -1,5 +1,14 @@
+---
+title: "Reverse 新年快乐"
+date: 2026-05-24T20:00:00+08:00
+draft: false
+author: "偶记"
+categories: ["逆向"]
+tags: ["Reverse", "IDA Pro", "UPX", "逆向工程", "CTF"]
+---
+
 ## 📋 题目信息
-+ **文件名**: reverse_新年快乐.exe
++ **文件名**: 新年快乐.exe
 + **类型**: Windows PE 可执行文件
 + **防护**: UPX 加壳
 

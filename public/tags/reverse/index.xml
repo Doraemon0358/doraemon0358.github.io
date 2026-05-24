@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>IDA Pro on Doraemon0358 的安全实验室</title>
-    <link>https://Doraemon0358.github.io/tags/ida-pro/</link>
-    <description>Recent content in IDA Pro on Doraemon0358 的安全实验室</description>
+    <title>Reverse on Doraemon0358 的安全实验室</title>
+    <link>https://Doraemon0358.github.io/tags/reverse/</link>
+    <description>Recent content in Reverse on Doraemon0358 的安全实验室</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 24 May 2026 20:00:00 +0800</lastBuildDate>
-    <atom:link href="https://Doraemon0358.github.io/tags/ida-pro/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://Doraemon0358.github.io/tags/reverse/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Reverse 新年快乐</title>
       <link>https://Doraemon0358.github.io/posts/reverse_%E6%96%B0%E5%B9%B4%E5%BF%AB%E4%B9%90/</link>
@@ -22,20 +22,6 @@
 &lt;hr&gt;
 &lt;h2 id=&#34;-第一步了解题目文件&#34;&gt;🔍 第一步：了解题目文件&lt;/h2&gt;
 &lt;p&gt;拿到题目后，我们首先看到的是一个 Windows 可执行文件 &lt;code&gt;新年快乐.exe&lt;/code&gt;。我们的目标是找到正确的 flag 输入。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>MCP 原理（IDA-Pro-MCP 为例）</title>
-      <link>https://Doraemon0358.github.io/posts/mcp%E5%8E%9F%E7%90%86ida-pro-mcp%E4%B8%BA%E4%BE%8B/</link>
-      <pubDate>Sun, 24 May 2026 13:00:00 +0800</pubDate>
-      <guid>https://Doraemon0358.github.io/posts/mcp%E5%8E%9F%E7%90%86ida-pro-mcp%E4%B8%BA%E4%BE%8B/</guid>
-      <description>&lt;p&gt;Cline是vscode上调用AI的插件。&lt;/p&gt;
-&lt;p&gt;要让 AI（Cline）调用 IDA，需要&lt;strong&gt;两端配置&lt;/strong&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Server 端&lt;/strong&gt;（IDA + ida_mcp）：负责暴露 IDA 的各种功能给 AI&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Client 端&lt;/strong&gt;（Cline）：负责连接 Server 并把工具告诉 AI&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;server-端配置ida-这边&#34;&gt;Server 端配置（IDA 这边）&lt;/h1&gt;
-&lt;p&gt;位置：%APPDATA%\Hex-Rays\IDA Pro\plugins&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
