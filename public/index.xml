@@ -20,52 +20,7 @@
 &lt;li&gt;&lt;strong&gt;Client 端&lt;/strong&gt;（Cline）：负责连接 Server 并把工具告诉 AI&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h1 id=&#34;server-端配置ida-这边&#34;&gt;Server 端配置（IDA 这边）&lt;/h1&gt;
-&lt;p&gt;位置：%APPDATA%\Hex-Rays\IDA Pro\plugins&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;ida_mcp.py → 主插件文件（入口）&lt;/li&gt;
-&lt;li&gt;ida_mcp 文件夹 → 插件的依赖和核心代码&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;启动方式：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;启动 MCP Server&lt;/strong&gt;（必须手动启动）
-&lt;ul&gt;
-&lt;li&gt;打开 IDA + 加载 IDB&lt;/li&gt;
-&lt;li&gt;按快捷键 &lt;strong&gt;Ctrl + Alt + M&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;或者菜单：&lt;strong&gt;Edit → Plugins → MCP&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;MCP Server 运行时的关键信息&lt;/strong&gt;（启动后会在 IDA 输出窗口看到）：
-&lt;ul&gt;
-&lt;li&gt;默认监听端口：&lt;strong&gt;13337&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;MCP&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Cached &lt;span style=&#34;color:#ae81ff&#34;&gt;18&lt;/span&gt; strings in 4ms
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;MCP&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Server started:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Streamable HTTP: http://127.0.0.1:13337/mcp
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  SSE: http://127.0.0.1:13337/sse
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Config: http://127.0.0.1:13337/config.html
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;client-端配置cline-这边&#34;&gt;Client 端配置（Cline 这边）&lt;/h1&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mcpServers&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ida-pro&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;disabled&amp;#34;&lt;/span&gt;: false,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;timeout&amp;#34;&lt;/span&gt;: 60,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sse&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;url&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://127.0.0.1:13337/sse&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;MCP&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &amp;gt;&amp;gt; initialize&lt;span style=&#34;color:#f92672&#34;&gt;({&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;protocolVersion&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2025-11-25&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;capabilities&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;clientInfo&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Cline&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;version&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3.84.0&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}})&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;MCP&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt; ini&lt;/span&gt;tialize &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0.2ms&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;protocolVersion&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2024-11-05&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;capabilities&amp;#34;&lt;/span&gt;: 
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tools&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{}&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;resources&amp;#34;&lt;/span&gt;: 
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;subscribe&amp;#34;&lt;/span&gt;: false, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;listChanged&amp;#34;&lt;/span&gt;: false&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;prompts&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{}}&lt;/span&gt;, 
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;serverInfo&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ida-pro-mcp&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;version&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}}&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;seeserver-sent-events&#34;&gt;SEE（Server-Sent Events）&lt;/h1&gt;
-&lt;p&gt;SSE 是一种&lt;strong&gt;服务器推送技术&lt;/strong&gt;，其核心特点是：&lt;/p&gt;</description>
+&lt;p&gt;位置：%APPDATA%\Hex-Rays\IDA Pro\plugins&lt;/p&gt;</description>
     </item>
     <item>
       <title>从外网打点到渗透内网域控 NASA</title>
@@ -135,27 +90,7 @@
 &lt;li&gt;题目名称含 “nasa”，生成针对性字典成功爆破后台密码 &lt;strong&gt;nasa123&lt;/strong&gt;。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;2-获取-webshell代码注入&#34;&gt;2. 获取 WebShell（代码注入）&lt;/h3&gt;
-&lt;p&gt;目标站点为&lt;strong&gt;逍遥商城系统&lt;/strong&gt;，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;利用思路&lt;/strong&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;访问 http://target/install/index.php 进入安装界面。&lt;/li&gt;
-&lt;li&gt;在数据库配置环节注入一句话木马：xy_&amp;rsquo;);eval($_POST[&amp;lsquo;cmd&amp;rsquo;])（利用 SQL 拼接构造恶意 config.php）。&lt;/li&gt;
-&lt;li&gt;删除 install/install.lock 文件（任意文件删除漏洞或手动操作）。&lt;/li&gt;
-&lt;li&gt;蚁剑连接后门：http://192.168.178.140/config.php。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;关键代码片段&lt;/strong&gt;（install/index.php）：&lt;/p&gt;
-&lt;p&gt;PHP&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-plain&#34; data-lang=&#34;plain&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;if ($result) {
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    // ... 省略
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $config = &amp;#34;&amp;lt;?php\n&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        . &amp;#34;\$pe[&amp;#39;db_host&amp;#39;]   = &amp;#39;{$_p_db_host}&amp;#39;;\n&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        // ...
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        . &amp;#34;define(&amp;#39;dbpre&amp;#39;, &amp;#39;{$_p_dbpre}&amp;#39;);\n&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        . &amp;#34;?&amp;gt;&amp;#34;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    file_put_contents(&amp;#34;{$pe[&amp;#39;path_root&amp;#39;]}config.php&amp;#34;, $config);
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;3-linux-提权&#34;&gt;3. Linux 提权&lt;/h3&gt;
-&lt;p&gt;上传 LinEnum.sh 进行本地枚举。&lt;/p&gt;</description>
+&lt;p&gt;目标站点为&lt;strong&gt;逍遥商城系统&lt;/strong&gt;，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

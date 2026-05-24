@@ -174,11 +174,9 @@
     <p>Cline是vscode上调用AI的插件。
 要让 AI（Cline）调用 IDA，需要两端配置：
 Server 端（IDA &#43; ida_mcp）：负责暴露 IDA 的各种功能给 AI Client 端（Cline）：负责连接 Server 并把工具告诉 AI Server 端配置（IDA 这边） 位置：%APPDATA%\Hex-Rays\IDA Pro\plugins
-ida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖和核心代码 启动方式：
-启动 MCP Server（必须手动启动） 打开 IDA &#43; 加载 IDB 按快捷键 Ctrl &#43; Alt &#43; M 或者菜单：Edit → Plugins → MCP MCP Server 运行时的关键信息（启动后会在 IDA 输出窗口看到）： 默认监听端口：13337 [MCP] Cached 18 strings in 4ms [MCP] Server started: Streamable HTTP: http://127.0.0.1:13337/mcp SSE: http://127.0.0.1:13337/sse Config: http://127.0.0.1:13337/config.html Client 端配置（Cline 这边） { &#34;mcpServers&#34;: { &#34;ida-pro&#34;: { &#34;disabled&#34;: false, &#34;timeout&#34;: 60, &#34;type&#34;: &#34;sse&#34;, &#34;url&#34;: &#34;http://127.0.0.1:13337/sse&#34; } } } [MCP] &gt;&gt; initialize({&#34;protocolVersion&#34;: &#34;2025-11-25&#34;, &#34;capabilities&#34;: {}, &#34;clientInfo&#34;: {&#34;name&#34;: &#34;Cline&#34;, &#34;version&#34;: &#34;3.84.0&#34;}}) [MCP] &lt;&lt; initialize (0.2ms) {&#34;protocolVersion&#34;: &#34;2024-11-05&#34;, &#34;capabilities&#34;: {&#34;tools&#34;: {}, &#34;resources&#34;: {&#34;subscribe&#34;: false, &#34;listChanged&#34;: false}, &#34;prompts&#34;: {}}, &#34;serverInfo&#34;: {&#34;name&#34;: &#34;ida-pro-mcp&#34;, &#34;version&#34;: &#34;1.0.0&#34;}} SEE（Server-Sent Events） SSE 是一种服务器推送技术，其核心特点是：
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2026-05-24 13:00:00 +0800 CST'>May 24, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>偶记</span></footer>
+  <footer class="entry-footer"><span title='2026-05-24 13:00:00 +0800 CST'>May 24, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>偶记</span></footer>
   <a class="entry-link" aria-label="post link to MCP 原理（IDA-Pro-MCP 为例）" href="https://Doraemon0358.github.io/posts/mcp%E5%8E%9F%E7%90%86ida-pro-mcp%E4%B8%BA%E4%BE%8B/"></a>
 </article>
 
@@ -189,13 +187,9 @@ ida_mcp.py → 主插件文件（入口） ida_mcp 文件夹 → 插件的依赖
   </header>
   <div class="entry-content">
     <p>目标环境 主机名 外网 IP 内网 IP 账号 密码 ubuntu 192.168.59.138 - ubuntu QWEasd444 win2003 192.168.59.144 10.10.10.137 administrator admin555 win7 192.168.59.197 10.10.10.142 win7 admin555 19server-01 - 10.10.10.140 nasa\administrator QWEasd.123 19server-02 - 10.10.10.141 nasa\administrator QWEasd.123 域用户 - - nasa\test QWEasd!@#999 1. 外网打点 使用 nmap、fscan 进行端口和服务扫描。 目录扫描发现后台入口 /admin/webadmin.php。 题目名称含 “nasa”，生成针对性字典成功爆破后台密码 nasa123。 2. 获取 WebShell（代码注入） 目标站点为逍遥商城系统，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。
-利用思路：
-访问 http://target/install/index.php 进入安装界面。 在数据库配置环节注入一句话木马：xy_’);eval($_POST[‘cmd’])（利用 SQL 拼接构造恶意 config.php）。 删除 install/install.lock 文件（任意文件删除漏洞或手动操作）。 蚁剑连接后门：http://192.168.178.140/config.php。 关键代码片段（install/index.php）：
-PHP
-if ($result) { // ... 省略 $config = &#34;&lt;?php\n&#34; . &#34;\$pe[&#39;db_host&#39;] = &#39;{$_p_db_host}&#39;;\n&#34; // ... . &#34;define(&#39;dbpre&#39;, &#39;{$_p_dbpre}&#39;);\n&#34; . &#34;?&gt;&#34;; file_put_contents(&#34;{$pe[&#39;path_root&#39;]}config.php&#34;, $config); } 3. Linux 提权 上传 LinEnum.sh 进行本地枚举。
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2026-04-25 22:00:00 +0800 CST'>April 25, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>偶记</span></footer>
+  <footer class="entry-footer"><span title='2026-04-25 22:00:00 +0800 CST'>April 25, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>偶记</span></footer>
   <a class="entry-link" aria-label="post link to 从外网打点到渗透内网域控 NASA" href="https://Doraemon0358.github.io/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/"></a>
 </article>
     </main>
