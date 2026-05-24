@@ -6,6 +6,11 @@ paginate = 10
 hasCJKLanguage = true
 publishDir = 'public'
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
 [taxonomies]
   category = "categories"
   tag = "tags"

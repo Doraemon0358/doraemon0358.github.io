@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on Doraemon0358 的安全实验室</title>
-    <link>https://Doraemon0358.github.io/posts/</link>
-    <description>Recent content in Posts on Doraemon0358 的安全实验室</description>
+    <title>Docker逃逸 on Doraemon0358 的安全实验室</title>
+    <link>https://Doraemon0358.github.io/tags/docker%E9%80%83%E9%80%B8/</link>
+    <description>Recent content in Docker逃逸 on Doraemon0358 的安全实验室</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 24 May 2026 13:00:00 +0800</lastBuildDate>
-    <atom:link href="https://Doraemon0358.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>MCP 原理（IDA-Pro-MCP 为例）</title>
-      <link>https://Doraemon0358.github.io/posts/mcp%E5%8E%9F%E7%90%86ida-pro-mcp%E4%B8%BA%E4%BE%8B/</link>
-      <pubDate>Sun, 24 May 2026 13:00:00 +0800</pubDate>
-      <guid>https://Doraemon0358.github.io/posts/mcp%E5%8E%9F%E7%90%86ida-pro-mcp%E4%B8%BA%E4%BE%8B/</guid>
-      <description>&lt;p&gt;Cline是vscode上调用AI的插件。&lt;/p&gt;
-&lt;p&gt;要让 AI（Cline）调用 IDA，需要&lt;strong&gt;两端配置&lt;/strong&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Server 端&lt;/strong&gt;（IDA + ida_mcp）：负责暴露 IDA 的各种功能给 AI&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Client 端&lt;/strong&gt;（Cline）：负责连接 Server 并把工具告诉 AI&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;server-端配置ida-这边&#34;&gt;Server 端配置（IDA 这边）&lt;/h1&gt;
-&lt;p&gt;位置：%APPDATA%\Hex-Rays\IDA Pro\plugins&lt;/p&gt;</description>
-    </item>
+    <lastBuildDate>Sat, 25 Apr 2026 22:00:00 +0800</lastBuildDate>
+    <atom:link href="https://Doraemon0358.github.io/tags/docker%E9%80%83%E9%80%B8/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从外网打点到渗透内网域控 NASA</title>
       <link>https://Doraemon0358.github.io/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/</link>

@@ -13,70 +13,31 @@
       <link>https://Doraemon0358.github.io/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/</link>
       <pubDate>Sat, 25 Apr 2026 22:00:00 +0800</pubDate>
       <guid>https://Doraemon0358.github.io/posts/%E4%BB%8E%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9%E5%88%B0%E5%9F%9F%E6%8E%A7-nasa%E9%9D%B6%E5%9C%BA/</guid>
-      <description>&lt;h3 id=&#34;目标环境&#34;&gt;目标环境&lt;/h3&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;主机名&lt;/th&gt;
-          &lt;th&gt;外网 IP&lt;/th&gt;
-          &lt;th&gt;内网 IP&lt;/th&gt;
-          &lt;th&gt;账号&lt;/th&gt;
-          &lt;th&gt;密码&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;ubuntu&lt;/td&gt;
-          &lt;td&gt;192.168.59.138&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;ubuntu&lt;/td&gt;
-          &lt;td&gt;QWEasd444&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;win2003&lt;/td&gt;
-          &lt;td&gt;192.168.59.144&lt;/td&gt;
-          &lt;td&gt;10.10.10.137&lt;/td&gt;
-          &lt;td&gt;administrator&lt;/td&gt;
-          &lt;td&gt;admin555&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;win7&lt;/td&gt;
-          &lt;td&gt;192.168.59.197&lt;/td&gt;
-          &lt;td&gt;10.10.10.142&lt;/td&gt;
-          &lt;td&gt;win7&lt;/td&gt;
-          &lt;td&gt;admin555&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;19server-01&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;10.10.10.140&lt;/td&gt;
-          &lt;td&gt;nasa\administrator&lt;/td&gt;
-          &lt;td&gt;QWEasd.123&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;19server-02&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;10.10.10.141&lt;/td&gt;
-          &lt;td&gt;nasa\administrator&lt;/td&gt;
-          &lt;td&gt;QWEasd.123&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;域用户&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;nasa\test&lt;/td&gt;
-          &lt;td&gt;QWEasd!@#999&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3 id=&#34;1-外网打点&#34;&gt;1. 外网打点&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;使用 nmap、fscan 进行端口和服务扫描。&lt;/li&gt;
-&lt;li&gt;目录扫描发现后台入口 /admin/webadmin.php。&lt;/li&gt;
-&lt;li&gt;题目名称含 “nasa”，生成针对性字典成功爆破后台密码 &lt;strong&gt;nasa123&lt;/strong&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;2-获取-webshell代码注入&#34;&gt;2. 获取 WebShell（代码注入）&lt;/h3&gt;
-&lt;p&gt;目标站点为&lt;strong&gt;逍遥商城系统&lt;/strong&gt;，安装向导文件 install/index.php 在未安装（install/install.lock 不存在）时存在严重漏洞。&lt;/p&gt;</description>
+      <description>&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;                   ┌─────────────────┐
+                   │     Ubuntu      │
+                   │ 192.168.226.158 │
+                   └─────────────────┘
+                             │
+               ┌─────────────┼─────────────┐
+               │                           │
+               ▼                           ▼
+   ┌────────────────────┐      ┌────────────────────┐
+   │      win2003       │      │       win7         │
+   │ 192.168.174.136    │      │ 192.168.174.135    │
+   │ 10.10.10.137       │      │ 10.10.10.142       │
+   └────────────────────┘      └────────────────────┘
+                                        │
+                                        ▼
+                 ┌───────────────────────┴───────────────────────┐
+                 │                                               │
+                 ▼                                               ▼
+   ┌─────────────────────────┐                   ┌─────────────────────────┐
+   │     19server-ad01       │                   │     19server-ad02       │
+   │     10.10.10.140        │                   │     10.10.10.139        │
+   └─────────────────────────┘                   └─────────────────────────┘
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;外网打点&#34;&gt;外网打点&lt;/h2&gt;
+&lt;h3 id=&#34;目录扫描&#34;&gt;目录扫描&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;http://192.168.226.161/install/&#34;&gt;http://192.168.226.161/admin/&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
