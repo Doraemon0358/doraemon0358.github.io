@@ -269,8 +269,7 @@
 <h2 id="-第二步用-ida-pro-打开文件">🔧 第二步：用 IDA Pro 打开文件<a hidden class="anchor" aria-hidden="true" href="#-第二步用-ida-pro-打开文件">#</a></h2>
 <h3 id="发现-upx-加壳-">发现 UPX 加壳 🛡️<a hidden class="anchor" aria-hidden="true" href="#发现-upx-加壳-">#</a></h3>
 <p>按 Shift + F7 打开 Segments 窗口（View → Open subviews → Segments），查看段信息，我们注意到程序被分成了三个段：</p>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img loading="lazy" src="https://cdn.nlark.com/yuque/0/2026/png/36155031/1779621607255-42f41f34-7fff-41c1-ad17-3172fc60301d.png"></p>
+<p><img alt="segments" loading="lazy" src="/posts/reverse_%E6%96%B0%E5%B9%B4%E5%BF%AB%E4%B9%90/segments.png"></p>
 <table>
   <thead>
       <tr>
@@ -359,8 +358,7 @@
 <li>在这个地址上**按键盘 **<strong>X</strong>（这是快捷键），会弹出 <strong>Xrefs to</strong> 窗口。</li>
 <li>双击里面的地址，就能跳到引用它的代码位置（大概率就是 main 函数里 printf 或 scanf 的位置）。</li>
 </ol>
-<!-- 这是一张图片，ocr 内容为： -->
-<p><img loading="lazy" src="https://cdn.nlark.com/yuque/0/2026/png/36155031/1779622777210-0b34e2e9-b097-4536-98d6-6544f9be0437.png"></p>
+<p><img alt="xrefs" loading="lazy" src="/posts/reverse_%E6%96%B0%E5%B9%B4%E5%BF%AB%E4%B9%90/xrefs.png"></p>
 <hr>
 <h2 id="-第五步反编译-main-函数">📝 第五步：反编译 main 函数<a hidden class="anchor" aria-hidden="true" href="#-第五步反编译-main-函数">#</a></h2>
 <p>在 IDA 中找到 <code>0x401C10</code> 地址的函数，按 <code>F5</code> 反编译，得到以下 C 伪代码：</p>

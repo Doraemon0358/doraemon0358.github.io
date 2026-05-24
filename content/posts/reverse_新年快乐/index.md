@@ -28,8 +28,7 @@ tags: ["Reverse", "IDA Pro", "UPX", "逆向工程", "CTF"]
 ### 发现 UPX 加壳 🛡️
 按 Shift + F7 打开 Segments 窗口（View → Open subviews → Segments），查看段信息，我们注意到程序被分成了三个段：
 
-<!-- 这是一张图片，ocr 内容为： -->
-![](https://cdn.nlark.com/yuque/0/2026/png/36155031/1779621607255-42f41f34-7fff-41c1-ad17-3172fc60301d.png)
+![segments](segments.png)
 
 | 段名 | 地址范围 | 说明 |
 | --- | --- | --- |
@@ -93,8 +92,7 @@ Unpacked 1 file.
 3. 在这个地址上**按键盘 ****X**（这是快捷键），会弹出 **Xrefs to** 窗口。
 4. 双击里面的地址，就能跳到引用它的代码位置（大概率就是 main 函数里 printf 或 scanf 的位置）。
 
-<!-- 这是一张图片，ocr 内容为： -->
-![](https://cdn.nlark.com/yuque/0/2026/png/36155031/1779622777210-0b34e2e9-b097-4536-98d6-6544f9be0437.png)
+![xrefs](xrefs.png)
 
 ---
 
